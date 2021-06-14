@@ -47,8 +47,11 @@ keystone.createList('User', {
 const authStrategy = keystone.createAuthStrategy({
   type: PasswordAuthStrategy,
   list: 'User',
-
-  config: { protectIdentities: process.env.NODE_ENV === 'production' },
+  config: {
+    identityField: 'email',
+    secretField: 'password',
+    protectIdentities: process.env.NODE_ENV === 'production',
+  },
 });
 
 module.exports = {
@@ -59,8 +62,7 @@ module.exports = {
       name: PROJECT_NAME,
       enableDefaultRoute: true,
       authStrategy,
-
-      isAccessAllowed: access.isLoggedIn,
+      isAccessAllowed: access.userIsAdmin,
     }),
   ],
 };
