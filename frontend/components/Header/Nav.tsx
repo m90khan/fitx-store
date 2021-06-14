@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import styled from 'styled-components';
+import media from 'css-in-js-media';
 
 export default function Nav() {
   return (
@@ -10,7 +11,7 @@ export default function Nav() {
           <Link href='/sell'>Sell</Link>
           <Link href='/orders'>Orders</Link>
           <Link href='/account'>Account</Link>
-          <button type='button'>My Cart</button>
+          <button type='button'>Cart</button>
         </>
       )}
       {!false && (
@@ -41,11 +42,14 @@ const NavStyles = styled.ul`
     color: var(--black);
     border: 0;
     cursor: pointer;
-    @media (max-width: 700px) {
-      font-size: 10px;
-      padding: 0 10px;
+    ${media('<=tablet', '>phone')} {
+      padding: 0 1rem;
     }
+    @media (max-width: 400px) {
+      font-size: 1.3rem;
 
+      padding: 0 0.5rem;
+    }
     &:after {
       height: 4px;
       background: var(--red);
@@ -70,10 +74,10 @@ const NavStyles = styled.ul`
       }
     }
   }
-  @media (max-width: 1300px) {
+  /* @media (max-width: 1300px) {
     border-top: 1px solid var(--lightGray);
     width: 100%;
     justify-content: center;
     font-size: 1.5rem;
-  }
+  } */
 `;

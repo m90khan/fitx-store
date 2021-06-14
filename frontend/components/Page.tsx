@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import media from 'css-in-js-media';
 
 import { useRouter, NextRouter } from 'next/router';
-import HeaderComp from './Header/Index';
+import Header from './Header/Index';
 
 interface Props {
   title: string | null;
@@ -28,7 +28,7 @@ export default function Page({ title, keywords, description, children }: Props) 
           href='https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap'
         />
       </Head>
-      <HeaderComp />
+      <Header />
       <Container>{children}</Container>
     </>
   );
@@ -43,9 +43,9 @@ const Container = styled.div`
   margin: 4rem auto;
   max-width: 80%;
   min-height: 70vh;
-  padding: 0 3rem;
+  padding: 0 1rem;
   ${media('<=phone')} {
     max-width: 95%;
-    padding: 0 1rem;
+    padding: 0 0.5rem;
   }
 `;
