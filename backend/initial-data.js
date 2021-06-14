@@ -3,18 +3,18 @@ const randomString = () => crypto.randomBytes(6).hexSlice();
 
 module.exports = async keystone => {
   // Count existing users
-  const {
-    data: {
-      _allUsersMeta: { count = 0 },
-    },
-  } = await keystone.executeGraphQL({
-    context: keystone.createContext().sudo(),
-    query: `query {
-      _allUsersMeta {
-        count
-      }
-    }`,
-  });
+  // const {
+  //   data: {
+  //     _allUsersMeta: { count = 0 },
+  //   },
+  // } = await keystone.executeGraphQL({
+  //   context: keystone.createContext().sudo(),
+  //   query: `query {
+  //     _allUsersMeta {
+  //       count
+  //     }
+  //   }`,
+  // });
 
   if (count === 0) {
     const password = randomString();
