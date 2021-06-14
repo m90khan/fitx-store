@@ -1,4 +1,4 @@
-const { products } = require('./data');
+const  { products } = require('./data');
 
 module.exports = async (ks) => {
   // Keystone API changed, so we need to check for both versions to get keystone
