@@ -54,7 +54,7 @@ const Product = {
     photo: {
       type: Relationship,
       ref: 'ProductImage.product',
-      labelField: 'Source',
+      labelField: 'Source', 
       adminConfig: {
         displayMode: 'cards',
         cardFields: ['image', 'altText'],
@@ -81,8 +81,7 @@ const Product = {
       type: Integer,
       isRequired: true,
     },
-    // TODO: Photo
-  },
+   },
 };
 
 module.exports = Product;

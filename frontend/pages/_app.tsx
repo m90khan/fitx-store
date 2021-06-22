@@ -18,12 +18,11 @@ Router.events.on('routeChangeStart', () => NProgress.start());
 Router.events.on('routeChangeComplete', () => NProgress.done());
 Router.events.on('routeChangeError', () => NProgress.done());
 function MyApp({ Component, pageProps, apollo }) {
-  console.log(apollo);
   return (
     <>
       <ApolloProvider client={apollo}>
-        <GlobalStyle />
         <Component {...pageProps} />
+        <GlobalStyle />
       </ApolloProvider>
     </>
   );

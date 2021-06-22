@@ -2,7 +2,8 @@ const isLoggedIn = ({ authentication: { item: user } }) => {
      return !!user
   }
   // Access control functions
-  const userIsAdmin = ({ authentication: { item: user } }) => Boolean(user && user.isAdmin);
+  const userIsAdmin = ({ authentication: { item: user } }) => Boolean(user && user.isAdmin)
+  
   const userOwnsItem = ({ authentication: { item: user } }) => {
     if (!user) {
       return false;
@@ -13,10 +14,10 @@ const isLoggedIn = ({ authentication: { item: user } }) => {
   };
   
   const userIsAdminOrOwner = auth => {
-    const isAdmin = access.userIsAdmin(auth);
-    const isOwner = access.userOwnsItem(auth);
+    const isAdmin = userIsAdmin(auth);
+    const isOwner = userOwnsItem(auth);
     return isAdmin ? isAdmin : isOwner;
   };
 
-
+ 
   module.exports={userIsAdmin, userIsAdminOrOwner, userOwnsItem, isLoggedIn}

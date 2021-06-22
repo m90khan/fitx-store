@@ -42,7 +42,7 @@ function createClient({ headers, initialState }) {
           },
         },
       },
-    }).restore(initialState || {}), // restore data data fetched on SSR to CSR like hotPotato
+    }).restore(initialState || {}), // restore data data fetched on SSR to CS like hotPotato
   });
 }
 

@@ -34,8 +34,8 @@ export default function Page({ title, keywords, description, children }: Props) 
   );
 }
 Page.defaultProps = {
-  title: 'Fitx | Best eCommerce Store',
-  description: 'Find the latest meetups and seminars in your city ',
+  title: 'Sando | Best eCommerce Store',
+  description: 'Find the latest store in your city ',
   keywords: 'startup, meetup, events,seminars ',
 };
 

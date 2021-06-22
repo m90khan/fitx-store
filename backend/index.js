@@ -1,4 +1,4 @@
-const dotenv = require('dotenv').config();
+require('dotenv').config();
 const { Keystone } = require('@keystonejs/keystone');
 const { PasswordAuthStrategy } = require('@keystonejs/auth-password');
 //  const { Text, Checkbox, Password } = require('@keystonejs/fields');
@@ -10,19 +10,23 @@ const UserSchema = require('./schemas/User');
 const ProductImage = require('./schemas/ProductImage');
 const access = require('./access');
 const { MongooseAdapter: Adapter } = require('@keystonejs/adapter-mongoose');
-const PROJECT_NAME = 'Fitx Store';
+const PROJECT_NAME = 'Sando Store';
 const adapterConfig = { mongoUri: `${process.env.DATABASE_URL}` };
+const session = require('@keystonejs/session')
 
 const keystone = new Keystone({
   adapter: new Adapter(adapterConfig),
   cookie: {
-    maxAge: 60 * 60 * 24 * 360, // How long they stay signed in?
+    maxAge: 60 * 60 * 24 * 180, // How long they stay signed in? 180 days
     secure: process.env.NODE_ENV === 'production',
+  
   },
   cookieSecret: process.env.COOKIE_SECRET,
-  // onConnect:   initialiseData,
-});
+// TOPIC : IMPLEMENT SESSIONS
 
+   // onConnect:   initialiseData,
+});
+ 
 keystone.createList('Product', {
   fields: ProductSchema.fields,
   labelField: 'name',
@@ -35,6 +39,7 @@ keystone.createList('ProductImage', {
 keystone.createList('User', {
   fields: UserSchema.fields,
   // List-level access controls
+ 
   access: {
     read: access.userIsAdminOrOwner,
     update: access.userIsAdminOrOwner,
@@ -53,10 +58,9 @@ const authStrategy = keystone.createAuthStrategy({
     protectIdentities: process.env.NODE_ENV === 'production',
   },
 });
-
-module.exports = {
+ module.exports = {
   keystone,
-  apps: [
+   apps: [
     new GraphQLApp(),
     new AdminUIApp({
       name: PROJECT_NAME,
@@ -64,5 +68,6 @@ module.exports = {
       authStrategy,
       isAccessAllowed: access.userIsAdmin,
     }),
-  ],
+   ],
+
 };

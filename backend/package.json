@@ -27,6 +27,7 @@
     "@keystonejs/fields-wysiwyg-tinymce": "^5.4.2",
     "@keystonejs/file-adapters": "^7.1.2",
     "@keystonejs/keystone": "^19.3.3",
+    "@keystonejs/session": "^8.3.2",
     "cross-env": "^7.0.3",
     "dotenv": "^10.0.0"
   },
