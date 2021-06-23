@@ -41,7 +41,6 @@ Page.defaultProps = {
 
 const Container = styled.div`
   margin: 4rem auto;
-  max-width: 80%;
   min-height: 70vh;
   padding: 0 1rem;
   ${media('<=phone')} {

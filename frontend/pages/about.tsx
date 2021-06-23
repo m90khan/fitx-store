@@ -1,10 +1,12 @@
 import React from 'react';
+import FullCart from '../components/FullCart';
+import Page from '../components/Page';
 
 function about() {
   return (
-    <div>
-      <h2>A</h2>
-    </div>
+    <Page>
+      <FullCart />
+    </Page>
   );
 }
 

@@ -7,7 +7,7 @@ import NProgress from 'nprogress';
 import Router from 'next/router';
 import './../styles/nprogress.css';
 import withData from '../lib/withData';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import 'tailwindcss/tailwind.css';
 
 const theme: DefaultTheme = {
   colors: {
