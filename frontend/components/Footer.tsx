@@ -27,9 +27,9 @@ const Footer = () => {
                       r='79.941%'
                       id='footer-logo'
                     >
-                      <stop stop-color='#4FD1C5' offset='0%'></stop>
-                      <stop stop-color='#81E6D9' offset='25.871%'></stop>
-                      <stop stop-color='#338CF5' offset='100%'></stop>
+                      <stop stopColor='#4FD1C5' offset='0%'></stop>
+                      <stop stopColor='#81E6D9' offset='25.871%'></stop>
+                      <stop stopColor='#338CF5' offset='100%'></stop>
                     </radialGradient>
                   </defs>
                   <rect
@@ -37,7 +37,7 @@ const Footer = () => {
                     height='32'
                     rx='16'
                     fill='url(#footer-logo)'
-                    fill-rule='nonzero'
+                    fillRule='nonzero'
                   ></rect>
                 </svg>
               </a>
@@ -247,7 +247,7 @@ const Footer = () => {
                       >
                         <path
                           d='M11.707 5.293L7 .586 5.586 2l3 3H0v2h8.586l-3 3L7 11.414l4.707-4.707a1 1 0 000-1.414z'
-                          fill-rule='nonzero'
+                          fillRule='nonzero'
                         ></path>
                       </svg>
                     </button>

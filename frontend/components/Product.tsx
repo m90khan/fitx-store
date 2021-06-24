@@ -7,7 +7,7 @@ const Product = ({ product }) => {
   return (
     <div className=' p-6 flex flex-col shadow-lg sm:min-w-full' key={product.id}>
       <Link href={'/product/' + product.id}>
-        <div className=' flex justify-center'>
+        <div className=' flex justify-center cursor-pointer'>
           <img
             className=' object-cover h-60 w-auto'
             src={product.photo && product.photo.image.publicUrlTransformed}
@@ -15,7 +15,10 @@ const Product = ({ product }) => {
         </div>
       </Link>
       <div className='pt-3 flex items-center justify-between'>
-        <p className=''>{product.name}</p>
+        <Link href={'/product/' + product.id}>
+          <p className='cursor-pointer'>{product.name}</p>
+        </Link>
+
         <svg
           className='h-6 w-6 fill-current text-gray-500 hover:text-black'
           xmlns='http://www.w3.org/2000/svg'
