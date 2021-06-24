@@ -6,7 +6,7 @@ import Link from 'next/link';
 const Product = ({ product }) => {
   return (
     <div className=' p-6 flex flex-col shadow-lg sm:min-w-full' key={product.id}>
-      <Link href={product.name}>
+      <Link href={'/product/' + product.id}>
         <div className=' flex justify-center'>
           <img
             className=' object-cover h-60 w-auto'

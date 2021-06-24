@@ -5,6 +5,7 @@ import media from 'css-in-js-media';
 
 import { useRouter, NextRouter } from 'next/router';
 import Header from './Header/Index';
+import Footer from './Footer';
 
 interface Props {
   title: string | null;
@@ -30,6 +31,7 @@ export default function Page({ title, keywords, description, children }: Props) 
       </Head>
       <Header />
       <Container>{children}</Container>
+      <Footer />
     </>
   );
 }

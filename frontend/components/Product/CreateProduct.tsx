@@ -1,9 +1,9 @@
 import { useMutation } from '@apollo/client';
 import gql from 'graphql-tag';
 import { useState } from 'react';
-import Alert from './lib/Alert';
-import useForm from '../utils/useForm';
-import { ALL_PRODUCTS_QUERY } from './Products';
+import Alert from '../lib/Alert';
+import useForm from '../../utils/useForm';
+import { ALL_PRODUCTS_QUERY } from '../Products';
 import { useEffect } from 'react';
 import Router from 'next/router';
 
