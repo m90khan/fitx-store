@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from '@apollo/client';
 import gql from 'graphql-tag';
+import Router from 'next/router';
 import useForm from '../../utils/useForm';
 import Alert from '../lib/Alert';
 
@@ -38,7 +39,6 @@ export default function UpdateProduct({ id }) {
   const { data, error, loading } = useQuery(SINGLE_PRODUCT_QUERY, {
     variables: { id },
   });
-  console.log(data);
   const { inputs, handleChange, clearForm, resetForm } = useForm(
     data?.Product || {
       name: '',
@@ -65,55 +65,113 @@ export default function UpdateProduct({ id }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const res = await updateProduct();
-    console.log(res);
     // Submit the inputfields to the backend:
     // TODO: Handle Submit!!!
     // const res = await createProduct();
-    // clearForm();
     // // Go to that product's page!
-    // Router.push({
-    //   pathname: `/product/${res.data.createProduct.id}`,
-    // });
+    Router.push({
+      pathname: `/product/${res.data.updateProduct.id}`,
+    });
   };
   return (
-    <form onSubmit={handleSubmit}>
-      {updateError && <Alert text={updateError.message} />}
-      <fieldset disabled={updateLoading} aria-busy={updateLoading}>
-        <label htmlFor='name'>
-          Name
-          <input
-            type='text'
-            id='name'
-            name='name'
-            placeholder='Name'
-            value={inputs.name}
-            onChange={handleChange}
-          />
-        </label>
-        <label htmlFor='price'>
-          Price
-          <input
-            type='number'
-            id='price'
-            name='price'
-            placeholder='price'
-            value={inputs.price}
-            onChange={handleChange}
-          />
-        </label>
-        <label htmlFor='description'>
-          Description
-          <textarea
-            id='description'
-            name='description'
-            placeholder='Description'
-            value={inputs.description}
-            onChange={handleChange}
-          />
-        </label>
+    <form className='flex   items-center justify-center  ' onSubmit={handleSubmit}>
+      <div className='grid bg-white rounded-lg shadow-xl w-11/12 md:w-9/12 lg:w-1/2'>
+        <div className='flex justify-center py-4'>
+          <div className='flex bg-purple-200 rounded-full md:p-4 p-2 border-2 border-purple-300'>
+            <svg
+              className='w-8 h-8 text-white'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+              xmlns='http://www.w3.org/2000/svg'
+            >
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                strokeWidth='2'
+                d='M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4'
+              ></path>
+            </svg>
+          </div>
+        </div>
 
-        <button type='submit'>Update Product</button>
-      </fieldset>
+        <div className='flex justify-center'>
+          <div className='flex'>
+            <h1 className='text-gray-600 font-bold md:text-2xl text-xl'>
+              Create Product
+            </h1>
+          </div>
+        </div>
+        {updateError && <Alert text={updateError.message} />}
+        {updateLoading && <Alert text='Loading ...' status='Updating Product' />}
+        {updateData && <Alert text='Product updated successfully...' status='Success' />}
+        <fieldset disabled={updateLoading} aria-busy={updateLoading}>
+          <div className='grid grid-cols-1 mt-5 mx-7'>
+            <label
+              className='uppercase md:text-sm text-xs text-gray-500 text-light font-semibold'
+              htmlFor='name'
+            >
+              Name
+            </label>
+            <input
+              className='py-2 px-3 rounded-lg border-2 border-purple-300 mt-1 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent'
+              type='text'
+              placeholder='Product Name'
+              id='name'
+              name='name'
+              required
+              value={inputs.name}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className='grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8 mt-5 mx-7'>
+            <div className='grid grid-cols-1'>
+              <label
+                className='uppercase md:text-sm text-xs text-gray-500 text-light font-semibold'
+                htmlFor='price'
+              >
+                Price
+              </label>
+              <input
+                className='py-2 px-3 rounded-lg border-2 border-purple-300 mt-1 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent'
+                type='number'
+                placeholder='Price'
+                id='price'
+                name='price'
+                required
+                value={inputs.price}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+          <div className='grid grid-cols-1 mt-5 mx-7'>
+            <label
+              className='uppercase md:text-sm text-xs text-gray-500 text-light font-semibold'
+              htmlFor='description'
+            >
+              Description
+            </label>
+            <textarea
+              className='py-2 px-3 rounded-lg border-2 border-purple-300 mt-1 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent'
+              placeholder='Product Description'
+              id='description'
+              name='description'
+              required
+              value={inputs.description}
+              onChange={handleChange}
+            />
+          </div>
+          <div className='flex items-center justify-center  md:gap-8 gap-4 pt-5 pb-5'>
+            <button
+              className='w-auto bg-purple-500 hover:bg-purple-700 rounded-lg shadow-xl font-medium text-white px-4 py-2'
+              type='submit'
+            >
+              Update Product
+            </button>{' '}
+          </div>
+        </fieldset>
+      </div>
     </form>
   );
 }

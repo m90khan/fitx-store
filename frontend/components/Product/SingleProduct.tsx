@@ -30,7 +30,7 @@ const SingleProduct = ({ id }) => {
   return (
     <>
       {error && <Alert text={error.message} />}
-      {loading && <Alert text='Loading ...' status='Creating Product' />}
+      {loading && <Alert text='Loading ...' status='Loading Product' />}
       {data && <ProductDetails product={data.Product} />}
     </>
   );
