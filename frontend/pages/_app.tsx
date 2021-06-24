@@ -6,7 +6,7 @@ import { AppProps } from 'next/app';
 import NProgress from 'nprogress';
 import Router from 'next/router';
 import './../styles/nprogress.css';
-import withData from '../lib/withData';
+import withData from '../utils/withData';
 import 'tailwindcss/tailwind.css';
 
 const theme: DefaultTheme = {
