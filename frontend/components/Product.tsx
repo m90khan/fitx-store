@@ -1,6 +1,5 @@
 import React from 'react';
 import Image from 'next/image';
-import ItemStyles from './../styles/ItemStyles';
 import formatCurrency from '../utils/formatCurrency';
 import Link from 'next/link';
 const Product = ({ product }) => {

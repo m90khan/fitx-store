@@ -43,7 +43,7 @@ keystone.createList('User', {
   access: {
     read: access.userIsAdminOrOwner,
     update: access.userIsAdminOrOwner,
-    create: access.userIsAdmin,
+    create: ()=>true,
     delete: access.userIsAdmin,
     auth: true,
   },
@@ -56,7 +56,9 @@ const authStrategy = keystone.createAuthStrategy({
     identityField: 'email',
     secretField: 'password',
     protectIdentities: process.env.NODE_ENV === 'production',
+   
   },
+    
 });
  module.exports = {
   keystone,

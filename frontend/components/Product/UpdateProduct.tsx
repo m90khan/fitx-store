@@ -64,10 +64,8 @@ export default function UpdateProduct({ id }) {
   // 3. We need the form to handle the updates
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await updateProduct();
     // Submit the inputfields to the backend:
-    // TODO: Handle Submit!!!
-    // const res = await createProduct();
+    const res = await updateProduct();
     // // Go to that product's page!
     Router.push({
       pathname: `/product/${res.data.updateProduct.id}`,

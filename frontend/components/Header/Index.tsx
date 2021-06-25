@@ -1,12 +1,16 @@
 import Link from 'next/link';
 import styled from 'styled-components';
-// import Nav from './Nav';
 import media from 'css-in-js-media';
 import { useState } from 'react';
 import { Cart } from './Cart';
+import getUser from '../GetUser';
+import Router from 'next/router';
+import Logout from '../Logout';
 
 export default function Header() {
   const [menu, setMenu] = useState(false);
+  const user = getUser();
+  console.log(user);
   const [showCart, setShowCart] = useState(false);
   const menuClassName = `${
     !menu && 'hidden'
@@ -59,14 +63,35 @@ export default function Header() {
                     Shop
                   </a>
                 </li>
-                <li>
-                  <a
-                    className='inline-block no-underline hover:text-black hover:underline py-2 px-4'
-                    href='/sell'
-                  >
-                    Sell
-                  </a>
-                </li>
+                {user && (
+                  <>
+                    <li>
+                      <a
+                        className='inline-block no-underline hover:text-black hover:underline py-2 px-4'
+                        href='/sell'
+                      >
+                        Sell
+                      </a>
+                    </li>
+
+                    <li>
+                      <a
+                        className='inline-block no-underline hover:text-black hover:underline py-2 px-4'
+                        href='/orders'
+                      >
+                        Orders
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        className='inline-block no-underline hover:text-black hover:underline py-2 px-4'
+                        href='/account'
+                      >
+                        Account
+                      </a>
+                    </li>
+                  </>
+                )}
                 <li>
                   <a
                     className='inline-block no-underline hover:text-black hover:underline py-2 px-4'
@@ -80,7 +105,15 @@ export default function Header() {
           </div>
 
           <div className='order-3 md:order-3 flex items-center'>
-            <a className='inline-block no-underline hover:text-black' href='#'>
+            {user && <Logout />}
+            <a
+              className='inline-block  pl-3 no-underline hover:text-black'
+              onClick={() =>
+                Router.push({
+                  pathname: `/account/login`,
+                })
+              }
+            >
               <svg
                 className='fill-current hover:text-black'
                 xmlns='http://www.w3.org/2000/svg'

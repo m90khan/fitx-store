@@ -1,7 +1,14 @@
 import { useEffect, useState } from 'react';
 
 export default function useForm(
-  initial: { name?: string; price?: number; description?: string; image?: any } = {}
+  initial: {
+    name?: string;
+    email?: string;
+    password?: any;
+    price?: number;
+    description?: string;
+    image?: any;
+  } = {}
 ) {
   // create a state object for our inputs
   const [inputs, setInputs] = useState(initial);
