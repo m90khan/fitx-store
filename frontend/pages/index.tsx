@@ -1,5 +1,6 @@
 import Products from '../components/Products';
 import Pagination from '../components/Pagination';
+import Head from 'next/head';
 
 import React from 'react';
 import Page from '../components/Page';
@@ -10,6 +11,9 @@ const Home = () => {
   const page = +query.page;
   return (
     <Page>
+      <Head>
+        <title>Sando Store</title>
+      </Head>
       <Products page={page || 1} />
       <Pagination page={page || 1} />
     </Page>

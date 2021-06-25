@@ -23,11 +23,6 @@ export default function Pagination({ page }) {
   const pageCount = Math.ceil(count / perPage);
   return (
     <div className='text-center flex justify-center w-full'>
-      <Head>
-        <title>
-          Sando Store - Page {page} of {pageCount}
-        </title>
-      </Head>
       <ul className='flex'>
         {page !== 1 && (
           <li className='mx-1 px-3 py-2 bg-gray-200 text-gray-500 rounded-lg'>

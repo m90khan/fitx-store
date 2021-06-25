@@ -78,7 +78,9 @@ const ProductDetails = ({ product }) => {
                 <span className='text-gray-600 ml-3'>4 Reviews</span>
               </span>
             </div>
-            <p className='leading-relaxed'>{product.description}</p>
+            <p className='leading-relaxed'>
+              {product.description.replace(/(<([^>]+)>)/gi, '')}
+            </p>
             <div className='flex mt-6 items-center pb-5 border-b-2 border-gray-200 mb-5'>
               <div className='flex'>
                 <span className='mr-3'>Color</span>

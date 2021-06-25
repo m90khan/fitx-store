@@ -39,7 +39,8 @@ function createClient({ headers, initialState }) {
         Query: {
           fields: {
             // TODO: We will add this together!
-            // allProducts: paginationField().read,
+            // @ts-ignore
+            allProducts: paginationField(),
           },
         },
       },

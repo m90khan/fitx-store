@@ -3,7 +3,7 @@ import Page from '../components/Page';
 
 const sellPage = () => {
   return (
-    <Page title='Checkout'>
+    <Page title='Create Product'>
       <CreateProduct />
     </Page>
   );
