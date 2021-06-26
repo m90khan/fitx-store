@@ -5,6 +5,7 @@ export default function useForm(
     name?: string;
     email?: string;
     password?: any;
+    confirmPassword?: any;
     price?: number;
     description?: string;
     image?: any;

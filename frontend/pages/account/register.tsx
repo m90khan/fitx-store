@@ -27,7 +27,6 @@ const Register = () => {
     // refetch current logged in users
     // refetchQueries: [{ query: CURRENT_USER_QUERY }],
   });
-  console.log(inputs);
   const handleSubmit = async (e) => {
     e.preventDefault();
     await register();

@@ -10,7 +10,6 @@ import Logout from '../Logout';
 export default function Header() {
   const [menu, setMenu] = useState(false);
   const user = getUser();
-  console.log(user);
   const [showCart, setShowCart] = useState(false);
   const menuClassName = `${
     !menu && 'hidden'

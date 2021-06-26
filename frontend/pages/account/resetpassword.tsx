@@ -7,15 +7,9 @@ import Page from '../../components/Page';
 import Alert from '../../components/lib/Alert';
 
 const PASSWORD_RESET_MUTATION = gql`
-  mutation PASSWORD_RESET_MUTATION($email: String!) {
-    authenticateUserWithPassword(email: $email) {
-      ... on authenticateUserOutput {
-        item {
-          id
-          email
-          name
-        }
-      }
+  mutation startPasswordRecovery($email: String!) {
+    startPasswordRecovery(email: $email) {
+      id
     }
   }
 `;
@@ -23,18 +17,18 @@ const PASSWORD_RESET_MUTATION = gql`
 const ResetPassword = () => {
   const { inputs, handleChange, resetForm } = useForm({
     email: '',
-    password: '',
   });
-  const [login, { error, loading }] = useMutation(PASSWORD_RESET_MUTATION, {
+  const [resetPassword, { error, loading }] = useMutation(PASSWORD_RESET_MUTATION, {
     variables: inputs,
     // refetch current logged in users
-    refetchQueries: [{ query: CURRENT_USER_QUERY }],
+    // refetchQueries: [{ query: CURRENT_USER_QUERY }],
   });
+  console.log('password', inputs);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await login();
+    await resetPassword();
     resetForm(e);
-    Router.push({ pathname: '/' });
+    // Router.push({ pathname: '/' });
   };
   return (
     <Page>

@@ -1,6 +1,6 @@
-const { Text, Select, Password,Relationship , Checkbox} = require('@keystonejs/fields')
-const access = require('./../access')
-
+const { Text, Select, Password,Relationship , Checkbox} = require('@keystonejs/fields');
+const { userIsAdmin } = require('../access');
+ 
 
 const User={
     fields:{
@@ -14,7 +14,7 @@ const User={
       // Field-level access controls
       // Here, we set more restrictive field access so a non-admin cannot make themselves admin.
       access: {
-        update: access.userIsAdmin,
+        update:  userIsAdmin,
       },
     },
     password: {

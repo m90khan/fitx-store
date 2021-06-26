@@ -4,7 +4,6 @@ import Products from '../../components/Products';
 import { useRouter } from 'next/router';
 const productsPage = () => {
   const { query, pathname } = useRouter();
-  console.log(pathname, typeof pathname);
   const page = +query.page;
   return (
     <Page>
