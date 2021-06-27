@@ -74,7 +74,10 @@ const Products = ({ page }) => {
           </div>
         </nav>
         <div className='min-w-full  grid  gap-10 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4  2xl:grid-cols-4'>
-          {data && data.allProducts.map((product) => <Product product={product} />)}
+          {data &&
+            data.allProducts.map((product) => (
+              <Product product={product} key={product.id} />
+            ))}
         </div>
       </div>
     </section>

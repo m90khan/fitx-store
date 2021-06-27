@@ -13,10 +13,11 @@ function makeANiceEmail(text) {
       line-height: 2;
       font-size: 20px;
     ">
-      <h2>Hello There!</h2>
+      <h2>Sando Store!</h2>
       <p>${text}</p>
-
-      <p>😘, Khan</p>
+      <p style="     
+      font-size: 10px;
+    ">&copy; 2021 | Sando Store </p>
     </div>
   `;
 }
@@ -36,7 +37,7 @@ const sendEmail = async ( rendererProps) => {
  
   const info = await transport.sendMail({
     to: recipientEmail,
-    from: 'test@sando.com',
+    from: 'sando@examplesando.app',
     subject: subject,
     html: makeANiceEmail(text),
     // html: makeANiceEmail(`Your Password Reset Token is here!

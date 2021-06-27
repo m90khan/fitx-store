@@ -5,11 +5,15 @@ import { CURRENT_USER_QUERY } from '../../components/GetUser';
 import useForm from '../../utils/useForm';
 import Page from '../../components/Page';
 import Alert from '../../components/lib/Alert';
+import { useState } from 'react';
 
 const PASSWORD_RESET_MUTATION = gql`
   mutation startPasswordRecovery($email: String!) {
     startPasswordRecovery(email: $email) {
-      id
+      user {
+        name
+        email
+      }
     }
   }
 `;
@@ -18,17 +22,19 @@ const ResetPassword = () => {
   const { inputs, handleChange, resetForm } = useForm({
     email: '',
   });
-  const [resetPassword, { error, loading }] = useMutation(PASSWORD_RESET_MUTATION, {
-    variables: inputs,
-    // refetch current logged in users
-    // refetchQueries: [{ query: CURRENT_USER_QUERY }],
-  });
-  console.log('password', inputs);
+  const [successStatus, setSuccessStatus] = useState(false);
+  const [resetPassword, { data, error, loading }] = useMutation(PASSWORD_RESET_MUTATION);
+  console.log('data', data);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await resetPassword();
+    await resetPassword({
+      variables: inputs,
+    });
     resetForm(e);
-    // Router.push({ pathname: '/' });
+    setSuccessStatus(true);
+    setTimeout(() => {
+      Router.push({ pathname: '/' });
+    }, 2000);
   };
   return (
     <Page>
@@ -65,6 +71,12 @@ const ResetPassword = () => {
             </div>
           </div>
           {error && <Alert text={error.message} />}
+          {successStatus && (
+            <Alert
+              status='Success: '
+              text='An email has been sent to you, proceed with the instructions provided in email'
+            />
+          )}
           {loading && <Alert text='Loading ...' status='Password Reset In Progress' />}
           <fieldset>
             <div className='grid grid-cols-1 mt-5 mx-7'>

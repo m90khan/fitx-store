@@ -1,9 +1,9 @@
-const { Text, Select, Password,Relationship , Checkbox} = require('@keystonejs/fields');
+const { Text, Select, Password, Relationship, Checkbox } = require('@keystonejs/fields');
 const { userIsAdmin } = require('../access');
- 
+const { sendEmail } = require('../emails');
 
-const User={
-    fields:{
+const User = {
+  fields: {
     name: { type: Text },
     email: {
       type: Text,
@@ -14,13 +14,49 @@ const User={
       // Field-level access controls
       // Here, we set more restrictive field access so a non-admin cannot make themselves admin.
       access: {
-        update:  userIsAdmin,
+        update: userIsAdmin,
       },
     },
     password: {
       type: Password,
     },
-  }}
+  },
+  access: {
+    read: true,
+    update: true,
+    create: true,
+    delete: userIsAdmin,
+    auth: true,
+  },
+  hooks: {
+    afterChange: async ({ updatedItem, existingItem }) => {
+      console.log({ updatedItem, existingItem });
+      if (existingItem && updatedItem.password !== existingItem.password) {
+        const url = process.env.SERVER_URL || 'http://localhost:3000';
+        const pathUrl = `${url}/account/login`;
+        const props = {
+          recipientEmail: updatedItem.email,
+          followUrl: pathUrl, // signIn url
+          subject: 'Your password has been updated',
+          text: `
+          <div>
+          <p>Hi ${updatedItem.name}</p>
+          <div>
+            <p>
+              Your password has been updated you can log in{' '}
+              <a href='${pathUrl}' target="_blank">
+                here
+              </a>
+            </p>
+          </div>
+        </div>
+          `,
+        };
 
+        await sendEmail(props);
+      }
+    },
+  },
+};
 
-  module.exports= User
+module.exports = User;
