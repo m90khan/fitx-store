@@ -13,6 +13,8 @@ const adapterConfig = { mongoUri: `${process.env.DATABASE_URL}` };
 const { ForgottenPasswordToken, customSchema } = require('./schemas/PasswordReset');
 const { userIsAdmin, userIsAdminOrOwner } = require('./access');
 const { sendEmail } = require('./emails');
+const CartItem = require('./schemas/CartItem');
+const { customCartSchema } = require('./mutations');
 
 const keystone = new Keystone({
   adapter: new Adapter(adapterConfig),
@@ -41,7 +43,13 @@ keystone.createList('User', {
   access: UserSchema.access,
   hooks: UserSchema.hooks,
 });
+keystone.createList('CartItem', {
+  fields: CartItem.fields,
+  // List-level access controls
+  access: CartItem.access,
+});
 keystone.createList('ForgottenPasswordToken', ForgottenPasswordToken);
+keystone.extendGraphQLSchema(customCartSchema)
 keystone.extendGraphQLSchema(customSchema);
 
 const authStrategy = keystone.createAuthStrategy({

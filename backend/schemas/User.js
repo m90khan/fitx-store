@@ -20,6 +20,15 @@ const User = {
     password: {
       type: Password,
     },
+    cart: {
+      type: Relationship,
+      ref: 'CartItem.user',
+      many: true,
+      ui: {
+        createView: { fieldMode: 'hidden' },
+        itemView: { fieldMode: 'read' },
+      },
+    },
   },
   access: {
     read: true,

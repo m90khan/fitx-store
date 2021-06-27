@@ -48,7 +48,7 @@ exports.ForgottenPasswordToken = {
       const now = new Date().toISOString();
 
       const { errors, data } = await context.executeGraphQL({
-        context: context.sudo(),
+        context:context.createContext({ skipAccessControl: true }),
         query: `
           query GetUserAndToken($user: ID!, $now: DateTime!) {
             User( where: { id: $user }) {
@@ -98,6 +98,7 @@ exports.ForgottenPasswordToken = {
 };
 
 exports.customSchema = {
+  
   mutations: [
     {
       schema: 'startPasswordRecovery(email: String!): ForgottenPasswordToken',
@@ -111,7 +112,8 @@ exports.customSchema = {
         const expiresAt = new Date(now + tokenExpiration).toISOString();
 
         const { errors: userErrors, data: userData } = await context.executeGraphQL({
-          context: context.sudo(),
+          // context: context.sudo(),
+          context:context.createContext({ skipAccessControl: true }),
           query: `
               query findUserByEmail($email: String!) {
                 allUsers(where: { email: $email }) {
@@ -140,7 +142,7 @@ exports.customSchema = {
         };
 
         const { errors, data: tokenData } = await context.executeGraphQL({
-          context: context.sudo(),
+          context:context.createContext({ skipAccessControl: true }),
           query: `
               mutation createForgottenPasswordToken(
                 $userId: ID!,
@@ -180,7 +182,7 @@ exports.customSchema = {
         const now = Date.now();
 
         const { errors, data } = await context.executeGraphQL({
-          context: context.sudo(),
+          context:context.createContext({ skipAccessControl: true }),
           query: `
               query findUserFromToken($token: String!, $now: DateTime!) {
                 passwordTokens: allForgottenPasswordTokens(where: { token: $token, expiresAt_gte: $now }) {
@@ -202,7 +204,7 @@ exports.customSchema = {
         const user = data.passwordTokens[0].user.id;
         const tokenId = data.passwordTokens[0].id;
         const { errors: passwordError } = await context.executeGraphQL({
-          context: context.sudo(),
+          context:context.createContext({ skipAccessControl: true }),
           query: `mutation UpdateUserPassword($user: ID!, $password: String!) {
               updateUser(id: $user, data: { password: $password }) {
                 id
@@ -219,7 +221,7 @@ exports.customSchema = {
         }
 
         await context.executeGraphQL({
-          context: context.sudo(),
+          context:context.createContext({ skipAccessControl: true }),
           query: `mutation DeletePasswordToken($tokenId: ID!) {
               deleteForgottenPasswordToken(id: $tokenId) {
                 id
