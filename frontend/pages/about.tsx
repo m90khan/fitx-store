@@ -1,13 +1,9 @@
-import React from 'react';
-import FullCart from '../components/FullCart';
-import Page from '../components/Page';
-
-function about() {
+const about = () => {
   return (
-    <Page>
-      <FullCart />
-    </Page>
+    <div>
+      <h1>asdhasd</h1>
+    </div>
   );
-}
+};
 
 export default about;

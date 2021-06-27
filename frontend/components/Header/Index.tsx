@@ -2,15 +2,19 @@ import Link from 'next/link';
 import styled from 'styled-components';
 import media from 'css-in-js-media';
 import { useState } from 'react';
-import { Cart } from './Cart';
+import CartMenu from './CartMenu';
 import getUser from '../GetUser';
 import Router from 'next/router';
 import Logout from '../Logout';
+import { useContext } from 'react';
+import { useCart } from '../../utils/globalContext';
 
 export default function Header() {
   const [menu, setMenu] = useState(false);
   const user = getUser();
   const [showCart, setShowCart] = useState(false);
+
+  const { toggleCart, cartOpen } = useCart();
   const menuClassName = `${
     !menu && 'hidden'
   } delay-500 md:flex md:items-center md:w-auto w-full order-2 md:order-1`;
@@ -89,6 +93,14 @@ export default function Header() {
                         Account
                       </a>
                     </li>
+                    <li>
+                      <a
+                        className='inline-block no-underline hover:text-black hover:underline py-2 px-4'
+                        href='/cart'
+                      >
+                        Cart
+                      </a>
+                    </li>
                   </>
                 )}
                 <li>
@@ -128,10 +140,10 @@ export default function Header() {
             <a
               className=' relative pl-3 inline-block no-underline hover:text-black'
               href='#'
-              onClick={() => setShowCart(!showCart)}
+              onClick={toggleCart}
             >
               <div className='absolute text-xs rounded-full -mt-1 -mr-2 px-1 font-bold top-0 right-0 bg-red-700 text-white'>
-                3
+                {user && user.cart.length}
               </div>
 
               <svg
@@ -148,54 +160,8 @@ export default function Header() {
             </a>
           </div>
         </div>
-        {showCart && <Cart />}
+        {cartOpen && <CartMenu />}
       </nav>
     </>
   );
 }
-
-const Logo = styled.h1`
-  margin: 1rem 0;
-  position: relative;
-  z-index: 2;
-  background: var(--primary);
-  ${media('<=tablet', '>phone')} {
-    text-align: center;
-  }
-  a {
-    color: white;
-    font-weight: 700;
-    font-size: 2rem;
-    text-decoration: none;
-    text-transform: uppercase;
-    padding: 0.5rem 1rem;
-  }
-`;
-
-const HeaderStyles = styled.header`
-  display: grid;
-  grid-template-columns: auto 1fr 0.5fr;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 2rem;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
-    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
-
-  ${media('<=desktop', '>tablet')} {
-    grid-template-columns: auto 1fr;
-    padding: 0 1rem;
-  }
-  ${media('<=tablet')} {
-    grid-template-columns: auto 1fr;
-    padding: 0 1rem;
-  }
-  @media (max-width: 400px) {
-    grid-template-columns: auto;
-  }
-
-  .sub-bar {
-    display: grid;
-    grid-template-columns: auto;
-    border-bottom: 1px solid var(--black, black);
-  }
-`;

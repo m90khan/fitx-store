@@ -8,7 +8,7 @@ import Router from 'next/router';
 import './../styles/nprogress.css';
 import withData from '../utils/withData';
 import 'tailwindcss/tailwind.css';
-
+import { CartStateProvider } from './../utils/globalContext';
 const theme: DefaultTheme = {
   colors: {
     primary: '#0070f3',
@@ -21,8 +21,10 @@ function MyApp({ Component, pageProps, apollo }) {
   return (
     <>
       <ApolloProvider client={apollo}>
-        <Component {...pageProps} />
-        <GlobalStyle />
+        <CartStateProvider>
+          <Component {...pageProps} />
+          <GlobalStyle />
+        </CartStateProvider>
       </ApolloProvider>
     </>
   );

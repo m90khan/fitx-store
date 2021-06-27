@@ -1,6 +1,19 @@
 import React from 'react';
-
+import calculateCartTotal from '../../utils/calculateCartTotal';
+import formatCurrency from '../../utils/formatCurrency';
+import getUser from '../GetUser';
+import Alert from '../lib/Alert';
 const FullCart = () => {
+  const user = getUser();
+  console.log(user);
+  if (!user || user.cart === null) {
+    return (
+      <Alert
+        status='ouuh Oh'
+        text='Your Cart is empty. Please login then proceed with shopping'
+      />
+    );
+  }
   return (
     <div className='flex justify-center my-6'>
       <div className='flex flex-col w-full p-8 text-gray-800 bg-white shadow-lg pin-r pin-y md:w-4/5 lg:w-4/5'>
@@ -21,116 +34,51 @@ const FullCart = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td className='hidden pb-4 md:table-cell'>
-                  <a href='#'>
-                    <img
-                      src='https://limg.app/i/Calm-Cormorant-Catholic-Pinball-Blaster-yM4oub.jpeg'
-                      className='w-20 rounded'
-                      alt='Thumbnail'
-                    />
-                  </a>
-                </td>
-                <td>
-                  <a href='#'>
-                    <p className='mb-2 md:ml-4'>Earphone</p>
-                    <form action='' method='POST'>
-                      <button type='submit' className='text-gray-700 md:ml-4'>
-                        <small>(Remove item)</small>
-                      </button>
-                    </form>
-                  </a>
-                </td>
-                <td className='justify-center md:justify-end md:flex mt-6'>
-                  <div className='w-20 h-10'>
-                    <div className='relative flex flex-row w-full h-8'>
-                      <input
-                        type='number'
-                        value='2'
-                        className='w-full font-semibold text-center text-gray-700 bg-gray-200 outline-none focus:outline-none hover:text-black focus:text-black'
+              {user.cart.map((cartItem) => (
+                <tr>
+                  <td className='hidden pb-4 md:table-cell'>
+                    <a href='#'>
+                      <img
+                        src={cartItem.product.photo.image.publicUrlTransformed}
+                        className='w-20 rounded'
+                        alt={cartItem.product.name}
                       />
+                    </a>
+                  </td>
+                  <td>
+                    <a href='#'>
+                      <p className='mb-2 md:ml-4'>{cartItem.product.name}</p>
+                      <form action='' method='POST'>
+                        <button type='submit' className='text-gray-700 md:ml-4'>
+                          <small>(Remove item)</small>
+                        </button>
+                      </form>
+                    </a>
+                  </td>
+                  <td className='justify-center md:justify-end md:flex mt-6'>
+                    <div className='w-20 h-10'>
+                      <div className='relative flex flex-row w-full h-8'>
+                        <input
+                          type='number'
+                          readOnly
+                          value={cartItem.quantity}
+                          className='w-full font-semibold text-center text-gray-700 bg-gray-200 outline-none focus:outline-none hover:text-black focus:text-black'
+                        />
+                      </div>
                     </div>
-                  </div>
-                </td>
-                <td className='hidden text-right md:table-cell'>
-                  <span className='text-sm lg:text-base font-medium'>10.00€</span>
-                </td>
-                <td className='text-right'>
-                  <span className='text-sm lg:text-base font-medium'>20.00€</span>
-                </td>
-              </tr>
-              <tr>
-                <td className='hidden pb-4 md:table-cell'>
-                  <a href='#'>
-                    <img
-                      src='https://limg.app/i/Cute-Constrictor-Super-Sexy-Military-Enforcer-W7mvBp.png'
-                      className='w-20 rounded'
-                      alt='Thumbnail'
-                    />
-                  </a>
-                </td>
-                <td>
-                  <p className='mb-2 md:ml-4'>Tesla Model 3</p>
-                  <form action='' method='POST'>
-                    <button type='submit' className='text-gray-700 md:ml-4'>
-                      <small>(Remove item)</small>
-                    </button>
-                  </form>
-                </td>
-                <td className='justify-center md:justify-end md:flex md:mt-4'>
-                  <div className='w-20 h-10'>
-                    <div className='relative flex flex-row w-full h-8'>
-                      <input
-                        type='number'
-                        value='3'
-                        className='w-full font-semibold text-center text-gray-700 bg-gray-200 outline-none focus:outline-none hover:text-black focus:text-black'
-                      />
-                    </div>
-                  </div>
-                </td>
-                <td className='hidden text-right md:table-cell'>
-                  <span className='text-sm lg:text-base font-medium'>49,600.01€</span>
-                </td>
-                <td className='text-right'>
-                  <span className='text-sm lg:text-base font-medium'>148,800.03€</span>
-                </td>
-              </tr>
-              <tr>
-                <td className='hidden pb-4 md:table-cell'>
-                  <a href='#'>
-                    <img
-                      src='https://limg.app/i/Successful-Spider-Biblical-Mutant---Total-War-lKoE7D.jpeg'
-                      className='w-20 rounded'
-                      alt='Thumbnail'
-                    />
-                  </a>
-                </td>
-                <td>
-                  <p className='mb-2 md:ml-4'>Bic 4 colour pen</p>
-                  <form action='' method='POST'>
-                    <button type='submit' className='text-gray-700 md:ml-4'>
-                      <small>(Remove item)</small>
-                    </button>
-                  </form>
-                </td>
-                <td className='justify-center md:justify-end md:flex md:mt-8'>
-                  <div className='w-20 h-10'>
-                    <div className='relative flex flex-row w-full h-8'>
-                      <input
-                        type='number'
-                        value='5'
-                        className='w-full font-semibold text-center text-gray-700 bg-gray-200 outline-none focus:outline-none hover:text-black focus:text-black'
-                      />
-                    </div>
-                  </div>
-                </td>
-                <td className='hidden text-right md:table-cell'>
-                  <span className='text-sm lg:text-base font-medium'>1.50€</span>
-                </td>
-                <td className='text-right'>
-                  <span className='text-sm lg:text-base font-medium'>7.50€</span>
-                </td>
-              </tr>
+                  </td>
+                  <td className='hidden text-right md:table-cell'>
+                    <span className='text-sm lg:text-base font-medium'>
+                      {formatCurrency(cartItem.product.price)}
+                    </span>
+                  </td>
+                  <td className='text-right'>
+                    <span className='text-sm lg:text-base font-medium'>
+                      {formatCurrency(cartItem.product.price * cartItem.quantity)}
+                    </span>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
           <hr className='pb-6 mt-6' />
@@ -146,14 +94,14 @@ const FullCart = () => {
                 <div className='justify-center md:flex'>
                   <form action='' method='POST'>
                     <div className='flex items-center w-full h-13 pl-3 bg-white bg-gray-100 border rounded-full'>
-                      <input
+                      {/* <input
                         type='coupon'
                         name='code'
                         id='coupon'
                         placeholder='Apply coupon'
                         value='90off'
                         className='w-full bg-gray-100 outline-none appearance-none focus:outline-none active:outline-none'
-                      />
+                      /> */}
                       <button
                         type='submit'
                         className='text-sm flex items-center px-3 py-1 text-white bg-gray-800 rounded-full outline-none md:px-4 hover:bg-gray-700 focus:outline-none active:outline-none'
@@ -202,7 +150,7 @@ const FullCart = () => {
                     Subtotal
                   </div>
                   <div className='lg:px-4 lg:py-2 m-2 lg:text-lg font-bold text-center text-gray-900'>
-                    148,827.53€
+                    {formatCurrency(calculateCartTotal(user.cart))}
                   </div>
                 </div>
                 <div className='flex justify-between pt-4 border-b'>
