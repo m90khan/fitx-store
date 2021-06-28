@@ -64,32 +64,66 @@ export default function Search() {
     itemToString: (item) => item?.name || '',
   });
   return (
-    <div>
-      <div {...getComboboxProps()}>
+    <div className='flex h-4/5  flex-col items-center justify-center'>
+      <div
+        {...getComboboxProps()}
+        className=' grid bg-white rounded-lg shadow-xl w-8/9 md:w-9/12 lg:w-1/3'
+      >
         <input
           {...getInputProps({
             type: 'search',
-            placeholder: 'Search for an Item',
+            placeholder: 'Search for an Product',
             id: 'search',
-            className: loading ? 'loading' : null,
+            className:
+              'py-2 px-3 rounded-lg border-2 border-purple-300 mt-1 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent',
           })}
         />
       </div>
-      <ul {...getMenuProps()}>
+      <ul {...getMenuProps()} className='flex flex-col w-8/9 md:w-9/12 lg:w-1/3   '>
         {isOpen &&
           items.map((item, index) => (
-            <li
-              {...getItemProps({ item, index })}
-              key={item.id}
-              highlighted={index === highlightedIndex}
-            >
-              <img
-                src={item.photo.image.publicUrlTransformed}
-                alt={item.name}
-                width='50'
-              />
-              {item.name}
-            </li>
+            <>
+              <div
+                className='cursor-pointer   border-gray-100 h-200 rounded-t border-b hover:bg-teal-100 '
+                {...getItemProps({ item, index })}
+                key={item.id}
+                highlighted={index === highlightedIndex}
+              >
+                <div className='flex w-full items-center p-2 pl-2 border-transparent border-l-2 relative hover:border-teal-100'>
+                  <div className='w-6 flex flex-col items-center'>
+                    <div className='flex relative w-10 h-10 bg-orange-500 justify-center items-center m-1 mr-2 w-4 h-4 mt-1 rounded-full '>
+                      <img
+                        className='rounded-full'
+                        alt='A'
+                        src={item.photo.image.publicUrlTransformed}
+                      />{' '}
+                    </div>
+                  </div>
+                  <div className='w-full items-center flex'>
+                    <div className='mx-2 -mt-1  '>
+                      {' '}
+                      {item.name}
+                      <div className='text-xs truncate w-full normal-case font-normal -mt-1 text-gray-500'>
+                        {' '}
+                        {item.description}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {/* <li
+                {...getItemProps({ item, index })}
+                key={item.id}
+                highlighted={index === highlightedIndex}
+              >
+                <img
+                  src={item.photo.image.publicUrlTransformed}
+                  alt={item.name}
+                  width='50'
+                />
+                {item.name}
+              </li> */}
+            </>
           ))}
         {isOpen && !items.length && !loading && (
           <li>Sorry, No items found for {inputValue}</li>
