@@ -5,7 +5,6 @@ import getUser from '../GetUser';
 import Alert from '../lib/Alert';
 const FullCart = () => {
   const user = getUser();
-  console.log(user);
   if (!user || user.cart === null) {
     return (
       <Alert
@@ -34,51 +33,52 @@ const FullCart = () => {
               </tr>
             </thead>
             <tbody>
-              {user.cart.map((cartItem) => (
-                <tr>
-                  <td className='hidden pb-4 md:table-cell'>
-                    <a href='#'>
-                      <img
-                        src={cartItem.product.photo.image.publicUrlTransformed}
-                        className='w-20 rounded'
-                        alt={cartItem.product.name}
-                      />
-                    </a>
-                  </td>
-                  <td>
-                    <a href='#'>
-                      <p className='mb-2 md:ml-4'>{cartItem.product.name}</p>
-                      <form action='' method='POST'>
-                        <button type='submit' className='text-gray-700 md:ml-4'>
-                          <small>(Remove item)</small>
-                        </button>
-                      </form>
-                    </a>
-                  </td>
-                  <td className='justify-center md:justify-end md:flex mt-6'>
-                    <div className='w-20 h-10'>
-                      <div className='relative flex flex-row w-full h-8'>
-                        <input
-                          type='number'
-                          readOnly
-                          value={cartItem.quantity}
-                          className='w-full font-semibold text-center text-gray-700 bg-gray-200 outline-none focus:outline-none hover:text-black focus:text-black'
+              {user &&
+                user.cart.map((cartItem) => (
+                  <tr>
+                    <td className='hidden pb-4 md:table-cell'>
+                      <a href='#'>
+                        <img
+                          src={cartItem.product.photo.image.publicUrlTransformed}
+                          className='w-20 rounded'
+                          alt={cartItem.product.name}
                         />
+                      </a>
+                    </td>
+                    <td>
+                      <a href='#'>
+                        <p className='mb-2 md:ml-4'>{cartItem.product.name}</p>
+                        <form action='' method='POST'>
+                          <button type='submit' className='text-gray-700 md:ml-4'>
+                            <small>(Remove item)</small>
+                          </button>
+                        </form>
+                      </a>
+                    </td>
+                    <td className='justify-center md:justify-end md:flex mt-6'>
+                      <div className='w-20 h-10'>
+                        <div className='relative flex flex-row w-full h-8'>
+                          <input
+                            type='number'
+                            readOnly
+                            value={cartItem.quantity}
+                            className='w-full font-semibold text-center text-gray-700 bg-gray-200 outline-none focus:outline-none hover:text-black focus:text-black'
+                          />
+                        </div>
                       </div>
-                    </div>
-                  </td>
-                  <td className='hidden text-right md:table-cell'>
-                    <span className='text-sm lg:text-base font-medium'>
-                      {formatCurrency(cartItem.product.price)}
-                    </span>
-                  </td>
-                  <td className='text-right'>
-                    <span className='text-sm lg:text-base font-medium'>
-                      {formatCurrency(cartItem.product.price * cartItem.quantity)}
-                    </span>
-                  </td>
-                </tr>
-              ))}
+                    </td>
+                    <td className='hidden text-right md:table-cell'>
+                      <span className='text-sm lg:text-base font-medium'>
+                        {formatCurrency(cartItem.product.price)}
+                      </span>
+                    </td>
+                    <td className='text-right'>
+                      <span className='text-sm lg:text-base font-medium'>
+                        {formatCurrency(cartItem.product.price * cartItem.quantity)}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
           <hr className='pb-6 mt-6' />
@@ -150,7 +150,7 @@ const FullCart = () => {
                     Subtotal
                   </div>
                   <div className='lg:px-4 lg:py-2 m-2 lg:text-lg font-bold text-center text-gray-900'>
-                    {formatCurrency(calculateCartTotal(user.cart))}
+                    {user && formatCurrency(calculateCartTotal(user.cart))}
                   </div>
                 </div>
                 <div className='flex justify-between pt-4 border-b'>
