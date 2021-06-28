@@ -15,6 +15,8 @@ const { userIsAdmin, userIsAdminOrOwner } = require('./access');
 const { sendEmail } = require('./emails');
 const CartItem = require('./schemas/CartItem');
 const { customCartSchema } = require('./mutations');
+const Order = require('./schemas/Order');
+const OrderItem = require('./schemas/OrderItem');
 
 const keystone = new Keystone({
   adapter: new Adapter(adapterConfig),
@@ -48,8 +50,16 @@ keystone.createList('CartItem', {
   // List-level access controls
   access: CartItem.access,
 });
+keystone.createList('OrderItem', {
+  fields: OrderItem.fields,
+  // List-level access controls
+});
+keystone.createList('Order', {
+  fields: Order.fields,
+  // List-level access controls
+});
 keystone.createList('ForgottenPasswordToken', ForgottenPasswordToken);
-keystone.extendGraphQLSchema(customCartSchema)
+keystone.extendGraphQLSchema(customCartSchema);
 keystone.extendGraphQLSchema(customSchema);
 
 const authStrategy = keystone.createAuthStrategy({

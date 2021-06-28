@@ -29,6 +29,11 @@ const User = {
         itemView: { fieldMode: 'read' },
       },
     },
+    orders: {
+      type: Relationship,
+      ref: 'Order.user',
+      many: true,
+    },
   },
   access: {
     read: true,
