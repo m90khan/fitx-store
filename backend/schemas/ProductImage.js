@@ -1,6 +1,7 @@
 require('dotenv').config();
 const { CloudinaryAdapter } = require('@keystonejs/file-adapters');
 const { CloudinaryImage } = require('@keystonejs/fields-cloudinary-image');
+const {userIsAdmin, userIsAdminOrOwner, userOwnsItem, isLoggedIn} = require('../access');
 
 const { Text, Relationship, adminConfig } = require('@keystonejs/fields');
 

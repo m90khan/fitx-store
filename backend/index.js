@@ -17,6 +17,7 @@ const CartItem = require('./schemas/CartItem');
 const { customCartSchema } = require('./mutations');
 const Order = require('./schemas/Order');
 const OrderItem = require('./schemas/OrderItem');
+const Role = require('./schemas/Role');
 
 const keystone = new Keystone({
   adapter: new Adapter(adapterConfig),
@@ -56,6 +57,10 @@ keystone.createList('OrderItem', {
 });
 keystone.createList('Order', {
   fields: Order.fields,
+  // List-level access controls
+});
+keystone.createList('Role', {
+  fields: Role.fields,
   // List-level access controls
 });
 keystone.createList('ForgottenPasswordToken', ForgottenPasswordToken);

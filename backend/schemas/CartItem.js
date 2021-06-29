@@ -1,4 +1,4 @@
-const { isLoggedIn } = require('../access');
+const {userIsAdmin, userIsAdminOrOwner, userOwnsItem, isLoggedIn} = require('../access');
 
 const {
   Text,

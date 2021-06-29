@@ -1,5 +1,5 @@
 const { Text, Select, Password, Relationship, Checkbox } = require('@keystonejs/fields');
-const { userIsAdmin } = require('../access');
+const {userIsAdmin, userIsAdminOrOwner, userOwnsItem, isLoggedIn} = require('../access');
 const { sendEmail } = require('../emails');
 
 const User = {
@@ -34,6 +34,10 @@ const User = {
       ref: 'Order.user',
       many: true,
     },
+    role: {
+      type: Relationship,
+      ref: 'Role.assignedTo',
+     },
   },
   access: {
     read: true,
