@@ -74,8 +74,7 @@ async function checkout(root, { token }, context) {
   console.log(orderItems);
   console.log('gonna create the order');
 
-  // TOPIC STUCK HERE
-  // 5. Create the order and return it
+   // 5. Create the order and return it
   const  order  = await createItem({
     context,
     listKey: 'Order',

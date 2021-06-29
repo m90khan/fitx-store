@@ -7,13 +7,11 @@ const {
 } = require('@keystonejs/fields');
 const { Wysiwyg } = require('@keystonejs/fields-wysiwyg-tinymce');
 
-const {userIsAdmin, userIsAdminOrOwner, userOwnsItem, isLoggedIn} = require('../access');
+const {userIsAdmin, userIsAdminOrOwner, userOwnsItem, isLoggedIn, rules} = require('../access');
 
 
 const Product = {
-  // TODO
-  // access:
-  fields: {
+    fields: {
     name: {
       type: Text,
       isRequired: true,
@@ -57,6 +55,19 @@ const Product = {
       type: Integer,
       isRequired: true,
     },
+    user: {
+      type: Relationship,
+      ref: 'User.products',
+      defaultValue: ({ authentication: { item: user } }) => ({
+        connect: { id: user.id},
+      }),
+    },
+   },
+   access: {
+    read: true,
+    update: true,
+    create: isLoggedIn,
+    delete: userIsAdmin,
    },
 };
 

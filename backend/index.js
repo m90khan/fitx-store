@@ -11,13 +11,14 @@ const { MongooseAdapter: Adapter } = require('@keystonejs/adapter-mongoose');
 const PROJECT_NAME = 'Sando Store';
 const adapterConfig = { mongoUri: `${process.env.DATABASE_URL}` };
 const { ForgottenPasswordToken, customSchema } = require('./schemas/PasswordReset');
-const { userIsAdmin, userIsAdminOrOwner } = require('./access');
+// const { userIsAdmin, userIsAdminOrOwner, isLoggedIn } = require('./access');
 const { sendEmail } = require('./emails');
 const CartItem = require('./schemas/CartItem');
 const { customCartSchema } = require('./mutations');
 const Order = require('./schemas/Order');
 const OrderItem = require('./schemas/OrderItem');
 const Role = require('./schemas/Role');
+const { isLoggedIn } = require('./access');
 
 const keystone = new Keystone({
   adapter: new Adapter(adapterConfig),
@@ -27,17 +28,20 @@ const keystone = new Keystone({
   },
   cookieSecret: process.env.COOKIE_SECRET,
   // TOPIC : IMPLEMENT SESSIONS
-
   // onConnect:   initialiseData,
 });
 
+
+ 
 keystone.createList('Product', {
   fields: ProductSchema.fields,
   labelField: 'name',
+  access:  ProductSchema.access
 });
 
 keystone.createList('ProductImage', {
   fields: ProductImage.fields,
+  // access: ProductImage.access
 });
 
 keystone.createList('User', {
@@ -49,15 +53,17 @@ keystone.createList('User', {
 keystone.createList('CartItem', {
   fields: CartItem.fields,
   // List-level access controls
-  access: CartItem.access,
+  // access: CartItem.access,
 });
 keystone.createList('OrderItem', {
   fields: OrderItem.fields,
   // List-level access controls
+  // access: OrderItem.access
 });
 keystone.createList('Order', {
   fields: Order.fields,
   // List-level access controls
+  // access: Order.access
 });
 keystone.createList('Role', {
   fields: Role.fields,
@@ -76,6 +82,21 @@ const authStrategy = keystone.createAuthStrategy({
     protectIdentities: process.env.NODE_ENV === 'production',
   },
 });
+
+
+const { createItem , getItem} = require('@keystonejs/server-side-graphql-client');
+   const getUser = async ({ itemId }) => {
+  const user = await getItem({
+    context,
+    listKey: 'User',
+    itemId,
+    returnFields: 'id, name role',
+  });
+  console.log(user); // User 123: { id: '123', name: 'Aman' }
+};
+
+
+
 module.exports = {
   keystone,
   apps: [
@@ -84,7 +105,9 @@ module.exports = {
       name: PROJECT_NAME,
       enableDefaultRoute: true,
       authStrategy,
-      isAccessAllowed: userIsAdmin,
+      isAccessAllowed:({ authentication: { item: user } }) => {
+          return !!user
+        }
     }),
   ],
 };

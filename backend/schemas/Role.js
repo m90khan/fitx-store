@@ -1,11 +1,12 @@
 const { Text, Select, Password, Relationship, Checkbox } = require('@keystonejs/fields');
 const {userIsAdmin, userIsAdminOrOwner, userOwnsItem, isLoggedIn} = require('../access');
- 
-const Role = {
+const { permissionFields } = require('./Fields');
+ const Role = {
   fields: {
     name: { type: Text ,       isRequired: true,
     },
-    assignedTo: {
+    ...permissionFields,
+     assignedTo: {
         type: Relationship,
         ref: 'User.role',
         many: true,
