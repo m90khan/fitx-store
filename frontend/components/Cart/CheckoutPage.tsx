@@ -7,6 +7,7 @@ import nProgress from 'nprogress';
 import { useState } from 'react';
 import { useCart } from '../../utils/globalContext';
 import { CURRENT_USER_QUERY } from '../GetUser';
+import Alert from '../lib/Alert';
 
 /*
 - Handle credit card payments | Elements
@@ -65,16 +66,13 @@ function CheckoutForm() {
       },
     });
     console.log(`Finished with the order!!`);
-    console.log(order);
     // 6. Change the page to view the order
-    // router.push({
-    //   pathname: `/order/[id]`,
-    //   query: {
-    //     id: order.data.checkout.id,
-    //   },
-    // });
-    // 7. Close the cart
-    // closeCart();
+    router.push({
+      pathname: `/order/[id]`,
+      query: {
+        id: order.data.checkout.id,
+      },
+    });
 
     // 8. turn the loader off
     setLoading(false);
@@ -83,19 +81,44 @@ function CheckoutForm() {
 
   return (
     <form onSubmit={handleSubmit} className='flex h-4/5  items-center justify-center'>
+      {loading && <Alert status='Loading' text='Loading Checkout' />}
       {error && (
-        <p style={{ fontSize: 12 }}>
-          {
-            //@ts-ignore
-            error.message
-          }
-        </p>
+        // @ts-ignore
+        <Alert status='error' text={error.message} />
       )}
-      {/* {graphQLError && <p style={{ fontSize: 12 }}>{graphQLError.message}</p>} */}
-      <div className='grid bg-white rounded-lg shadow-xl w-8/9 md:w-9/12 lg:w-1/3'>
-        <h1>Enter Card Number</h1>
-        <CardElement />
-        <button className='flex justify-center w-full px-10 py-3 mt-6 font-medium text-white uppercase bg-purple-800 rounded-full shadow item-center hover:bg-purple-700 focus:shadow-outline focus:outline-none'>
+      {graphQLError && <Alert status='error' text={graphQLError.message} />}
+      <div className='grid bg-white rounded-lg shadow-xl w-8/9 md:w-9/12 lg:w-1/3 bg-purple-600'>
+        <h1 className='py-5'>Enter Card Number</h1>
+        <CardElement
+          options={{
+            iconStyle: 'solid',
+            hidePostalCode: true,
+            style: {
+              base: {
+                iconColor: '#c4f0ff',
+                color: '#fff',
+                fontWeight: 500,
+                fontFamily: 'Roboto, Open Sans, Segoe UI, sans-serif',
+                fontSize: '18px',
+                fontSmoothing: 'antialiased',
+                ':-webkit-autofill': {
+                  color: '#fce883',
+                },
+                '::placeholder': {
+                  color: '#87bbfd',
+                },
+              },
+              invalid: {
+                iconColor: '#ffc7ee',
+                color: '#ffc7ee',
+              },
+            },
+          }}
+        />
+        <button
+          disabled={!stripe}
+          className='flex justify-center w-full px-10 py-3 mt-6 font-medium text-white uppercase bg-purple-800 rounded-full shadow item-center hover:bg-purple-700 focus:shadow-outline focus:outline-none'
+        >
           <span className='ml-2 mt-5px'>Procceed to checkout</span>
         </button>
       </div>
