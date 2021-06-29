@@ -1,10 +1,12 @@
 /* eslint-disable */
 const stripeConfig = require('../utils/stripe');
-require('dotenv').config()
+require('dotenv').config();
+const { createItem } = require('@keystonejs/server-side-graphql-client');
+
 async function checkout(root, { token }, context) {
   // 1. Make sure they are signed in
   const currentUser = context.authedItem;
-    if (!currentUser.id) {
+  if (!currentUser.id) {
     throw new Error('You must be logged in to do this!');
   }
   // 1.5 Query the current user
@@ -38,15 +40,15 @@ async function checkout(root, { token }, context) {
      `,
     variables: { id: currentUser.id },
   });
- 
-   const jData =   JSON.parse(JSON.stringify(data));
-    
+
+  const jData = JSON.parse(JSON.stringify(data));
+
   // 2. calc the total price for their order
-  const cartItems =jData.User.cart.filter((cartItem) => cartItem.product);
-   const amount = cartItems?.reduce(function (tally, cartItem) {
+  const cartItems = jData.User.cart.filter((cartItem) => cartItem.product);
+  const amount = cartItems?.reduce(function (tally, cartItem) {
     return tally + cartItem.quantity * cartItem.product.price;
   }, 0);
-     // 3. create the charge with the stripe library
+  // 3. create the charge with the stripe library
   const charge = await stripeConfig.paymentIntents
     .create({
       amount, // deals in cents as well
@@ -58,7 +60,7 @@ async function checkout(root, { token }, context) {
       console.log(err);
       throw new Error(err.message);
     });
-   // 4. Convert the cartItems to OrderItems
+  // 4. Convert the cartItems to OrderItems
   const orderItems = cartItems.map((cartItem) => {
     const orderItem = {
       name: cartItem.product.name,
@@ -69,20 +71,30 @@ async function checkout(root, { token }, context) {
     };
     return orderItem;
   });
+  console.log(orderItems);
   console.log('gonna create the order');
- // TOPIC STUCK HERE
+
+  // TOPIC STUCK HERE
   // 5. Create the order and return it
-  const { errors, data: order } = await context.executeGraphQL({
+  const  order  = await createItem({
+    context,
+    listKey: 'Order',
+    item: {
+      total: charge.amount,
+      charge: charge.id,
+      items: {create: orderItems},
+      user:{connect: {id: currentUser.id}},
+    },
+    returnFields: `id`,
+  });
+   
+  /*const { errors, data: order } = await context.executeGraphQL({
     context: context.createContext({ skipAccessControl: true }),
     query: `
-    mutation createOrder ($amount: Int, $charge: String, $orderItems: { name: String
-      description: String
-      price: Int!
-      quantity: Int!
-      photo: String}, $userId: ID! ){
+    mutation createOrder ($amount: Int, $charge: String, $orderItems: [OrderItem], $userId: ID! ){
         createOrder(data:{total: $amount , charge: $charge , items: {create: $orderItems}, user:{connect:{id: $userId }}}){
           user{
-            id
+            name
           }
         }
       }
@@ -92,17 +104,18 @@ async function checkout(root, { token }, context) {
       charge: charge.id,
       orderItems: orderItems,
       userId: currentUser.id,
-     },
-  });
-  console.log(order)
-  console.log(errors)
+    },
+  });*/
+   
+  console.log(order);
   // 6. Clean up any old cart item
   const cartItemIds = jData.User.cart.map((cartItem) => cartItem.id);
+  console.log(cartItemIds);
   console.log('gonna create delete cartItems');
   await context.executeGraphQL({
     context: context.createContext({ skipAccessControl: true }),
     query: `
-    mutation{
+    mutation ($cartItemIds : [ID]){
         deleteCartItems(ids: $cartItemIds){
           product{
             name
@@ -120,56 +133,4 @@ async function checkout(root, { token }, context) {
 
 module.exports = checkout;
 
-
-/**
  
-
- User(where:{id: $id}){
-            id
-            name
-            email
-            cart {
-              id
-              quantity
-              product {
-                name
-                price
-                description
-                id
-                photo {
-                  id
-                  image {
-                    id
-                    publicUrlTransformed
-                  }
-                }
-              }
-            }
-        }
-
-
-
-        
-          allCartItems(where:{user:{id: $id}}){
-            id
-            quantity
-            product{
-              id
-              name
-              description
-              price
-               photo {
-                  id
-                  image {
-                  id
-                  publicUrlTransformed
-                          }
-                        }
-            }
-            user{
-              id
-              name
-              email
-            }
-          }
- */
