@@ -1,8 +1,14 @@
 const { Text, Select, Password, Relationship, Checkbox } = require('@keystonejs/fields');
-const {userIsAdmin, userIsAdminOrOwner, userOwnsItem, isLoggedIn} = require('../access');
+const {
+  userIsAdmin,
+  userIsAdminOrOwner,
+  userOwnsItem,
+  isLoggedIn,
+  rules,
+  permissions,
+} = require('../access');
 const { sendEmail } = require('../emails');
 
- 
 const User = {
   fields: {
     name: { type: Text },
@@ -38,19 +44,20 @@ const User = {
     role: {
       type: Relationship,
       ref: 'Role.assignedTo',
-     },
-     products: {
+    },
+    products: {
       type: Relationship,
       ref: 'Product.user',
-      many: true
-     },
+      many: true,
+    },
   },
   access: {
-    read: true,
-    update: true,
-    create: true,
-    delete: userIsAdmin,
-    auth: true,
+    create:   true,
+    read:  rules.canManageUsers,
+    update:  rules.canManageUsers,
+    // only people with the permission can delete themselves!
+    // You can't delete yourself
+    delete: permissions.canManageUsers,
   },
   hooks: {
     afterChange: async ({ updatedItem, existingItem }) => {

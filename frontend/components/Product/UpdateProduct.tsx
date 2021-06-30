@@ -178,3 +178,59 @@ export default function UpdateProduct({ id }) {
 
 http://localhost:3000/update?id=60c6fdccebe15c2534be8072
 */
+
+/*
+// backend
+const { Keystone } = require('@keystonejs/keystone');
+const { CloudinaryAdapter } = require('@keystonejs/file-adapters');
+const { CloudinaryImage } = require('@keystonejs/fields-cloudinary-image');
+const fileAdapter = new CloudinaryAdapter({
+  cloudName: process.env.CLOUDINARY_CLOUD_NAME,
+  apiKey: process.env.CLOUDINARY_KEY,
+  apiSecret: process.env.CLOUDINARY_SECRET,
+});
+module.exports = function(keystone) {
+	keystone.createList('User', {
+		fields: {
+			image: { type: CloudinaryImage, adapter: fileAdapter },
+		}
+	});
+};
+// frontend
+import gql from 'graphql-tag';
+import { useQuery, useMutation } from 'react-apollo-hooks';
+export const Upload = ({ userId }) => {
+	const updateAvatar = useMutation(UPDATE_AVATAR);
+	const handleImageChange = files => {
+		const file = files ? files[0] : false;
+		if (!file) return;
+		updateAvatar({
+			variables: {
+				userId,
+				image: file,
+			},
+		})
+			.then(() => {
+				// done
+			})
+			.catch(error => {
+				console.error(error);
+			});
+	};
+	return (
+		<input
+			type="file"
+			onChange={e => handleImageChange(e.target.files)}
+		/>
+	);
+};
+const UPDATE_AVATAR = gql`
+	mutation UpdateUser($userId: ID!, $image: Upload) {
+		updateUser(id: $userId, data: { image: $image }) {
+			id
+			image
+		}
+	}
+`;
+
+*/

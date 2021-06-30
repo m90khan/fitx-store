@@ -10,16 +10,16 @@ const {
   Select,
   Text,
 } = require('@keystonejs/fields');
-const { userIsAdmin } = require('../access');
+const { userIsAdmin, isLoggedIn } = require('../access');
 const { v4: uuid } = require('uuid');
 const { sendEmail } = require('../emails');
 
 exports.ForgottenPasswordToken = {
   access: {
     create: true,
-    read: true,
-    update: true,
-    delete: true,
+    read: isLoggedIn,
+    update: userIsAdmin,
+    delete: userIsAdmin,
   },
   fields: {
     user: {
@@ -48,7 +48,7 @@ exports.ForgottenPasswordToken = {
       const now = new Date().toISOString();
 
       const { errors, data } = await context.executeGraphQL({
-        context:context.createContext({ skipAccessControl: true }),
+        context: context.createContext({ skipAccessControl: true }),
         query: `
           query GetUserAndToken($user: ID!, $now: DateTime!) {
             User( where: { id: $user }) {
@@ -97,142 +97,141 @@ exports.ForgottenPasswordToken = {
   },
 };
 
-exports.customSchema = {
-  
-  mutations: [
-    {
-      schema: 'startPasswordRecovery(email: String!): ForgottenPasswordToken',
-      resolver: async (obj, { email }, context) => {
-        const token = uuid();
-        const tokenExpiration =
-          parseInt(process.env.RESET_PASSWORD_TOKEN_EXPIRY) || 1000 * 60 * 60 * 24;
+// exports.customSchema = {
+//   mutations: [
+//     {
+//       schema: 'startPasswordRecovery(email: String!): ForgottenPasswordToken',
+//       resolver: async (obj, { email }, context) => {
+//         const token = uuid();
+//         const tokenExpiration =
+//           parseInt(process.env.RESET_PASSWORD_TOKEN_EXPIRY) || 1000 * 60 * 60 * 24;
 
-        const now = Date.now();
-        const requestedAt = new Date(now).toISOString();
-        const expiresAt = new Date(now + tokenExpiration).toISOString();
+//         const now = Date.now();
+//         const requestedAt = new Date(now).toISOString();
+//         const expiresAt = new Date(now + tokenExpiration).toISOString();
 
-        const { errors: userErrors, data: userData } = await context.executeGraphQL({
-          // context: context.sudo(),
-          context:context.createContext({ skipAccessControl: true }),
-          query: `
-              query findUserByEmail($email: String!) {
-                allUsers(where: { email: $email }) {
-                  id
-                  email
-                }
-              }
-            `,
-          variables: { email: email },
-        });
+//         const { errors: userErrors, data: userData } = await context.executeGraphQL({
+//           // context: context.sudo(),
+//           context: context.createContext({ skipAccessControl: true }),
+//           query: `
+//               query findUserByEmail($email: String!) {
+//                 allUsers(where: { email: $email }) {
+//                   id
+//                   email
+//                 }
+//               }
+//             `,
+//           variables: { email: email },
+//         });
 
-        if (userErrors || !userData.allUsers || !userData.allUsers.length) {
-          console.error(
-            userErrors,
-            `Unable to find user when trying to create forgotten password token.`
-          );
-          return;
-        }
+//         if (userErrors || !userData.allUsers || !userData.allUsers.length) {
+//           console.error(
+//             userErrors,
+//             `Unable to find user when trying to create forgotten password token.`
+//           );
+//           return;
+//         }
 
-        const userId = userData?.allUsers[0].id;
-        const result = {
-          userId,
-          token,
-          requestedAt,
-          expiresAt,
-        };
+//         const userId = userData?.allUsers[0].id;
+//         const result = {
+//           userId,
+//           token,
+//           requestedAt,
+//           expiresAt,
+//         };
 
-        const { errors, data: tokenData } = await context.executeGraphQL({
-          context:context.createContext({ skipAccessControl: true }),
-          query: `
-              mutation createForgottenPasswordToken(
-                $userId: ID!,
-                $token: String!,
-                $requestedAt: DateTime,
-                $expiresAt: DateTime,
-              ) {
-                createForgottenPasswordToken(data: {
-                  user: { connect: { id: $userId }},
-                  token: $token,
-                  requestedAt: $requestedAt,
-                  expiresAt: $expiresAt,
-                }) {
-                  id
-                  token
-                  user {
-                    id
-                  }
-                  requestedAt
-                  expiresAt
-                }
-              }
-            `,
-          variables: result,
-        });
-        if (errors) {
-          console.error(errors, `Unable to create forgotten password token.`);
-          return;
-        }
+//         const { errors, data: tokenData } = await context.executeGraphQL({
+//           context: context.createContext({ skipAccessControl: true }),
+//           query: `
+//               mutation createForgottenPasswordToken(
+//                 $userId: ID!,
+//                 $token: String!,
+//                 $requestedAt: DateTime,
+//                 $expiresAt: DateTime,
+//               ) {
+//                 createForgottenPasswordToken(data: {
+//                   user: { connect: { id: $userId }},
+//                   token: $token,
+//                   requestedAt: $requestedAt,
+//                   expiresAt: $expiresAt,
+//                 }) {
+//                   id
+//                   token
+//                   user {
+//                     id
+//                   }
+//                   requestedAt
+//                   expiresAt
+//                 }
+//               }
+//             `,
+//           variables: result,
+//         });
+//         if (errors) {
+//           console.error(errors, `Unable to create forgotten password token.`);
+//           return;
+//         }
 
-        return true;
-      },
-    },
-    {
-      schema: 'changePasswordWithToken(token: String!, password: String!): User',
-      resolver: async (obj, { token, password }, context) => {
-        const now = Date.now();
+//         return true;
+//       },
+//     },
+//     {
+//       schema: 'changePasswordWithToken(token: String!, password: String!): User',
+//       resolver: async (obj, { token, password }, context) => {
+//         const now = Date.now();
 
-        const { errors, data } = await context.executeGraphQL({
-          context:context.createContext({ skipAccessControl: true }),
-          query: `
-              query findUserFromToken($token: String!, $now: DateTime!) {
-                passwordTokens: allForgottenPasswordTokens(where: { token: $token, expiresAt_gte: $now }) {
-                  id
-                  token
-                  user {
-                    id
-                  }
-                }
-              }`,
-          variables: { token, now },
-        });
+//         const { errors, data } = await context.executeGraphQL({
+//           context: context.createContext({ skipAccessControl: true }),
+//           query: `
+//               query findUserFromToken($token: String!, $now: DateTime!) {
+//                 passwordTokens: allForgottenPasswordTokens(where: { token: $token, expiresAt_gte: $now }) {
+//                   id
+//                   token
+//                   user {
+//                     id
+//                   }
+//                 }
+//               }`,
+//           variables: { token, now },
+//         });
 
-        if (errors || !data.passwordTokens || !data.passwordTokens.length) {
-          console.error(errors, `Unable to find token`);
-          throw errors.message;
-        }
+//         if (errors || !data.passwordTokens || !data.passwordTokens.length) {
+//           console.error(errors, `Unable to find token`);
+//           throw errors.message;
+//         }
 
-        const user = data.passwordTokens[0].user.id;
-        const tokenId = data.passwordTokens[0].id;
-        const { errors: passwordError } = await context.executeGraphQL({
-          context:context.createContext({ skipAccessControl: true }),
-          query: `mutation UpdateUserPassword($user: ID!, $password: String!) {
-              updateUser(id: $user, data: { password: $password }) {
-                id
-              }
-            }`,
-          variables: { user, password },
-        });
+//         const user = data.passwordTokens[0].user.id;
+//         const tokenId = data.passwordTokens[0].id;
+//         const { errors: passwordError } = await context.executeGraphQL({
+//           context: context.createContext({ skipAccessControl: true }),
+//           query: `mutation UpdateUserPassword($user: ID!, $password: String!) {
+//               updateUser(id: $user, data: { password: $password }) {
+//                 id
+//               }
+//             }`,
+//           variables: { user, password },
+//         });
 
-        console.log({ user, password, tokenId });
+//         console.log({ user, password, tokenId });
 
-        if (passwordError) {
-          console.error(passwordError, `Unable to change password`);
-          throw passwordError.message;
-        }
+//         if (passwordError) {
+//           console.error(passwordError, `Unable to change password`);
+//           throw passwordError.message;
+//         }
 
-        await context.executeGraphQL({
-          context:context.createContext({ skipAccessControl: true }),
-          query: `mutation DeletePasswordToken($tokenId: ID!) {
-              deleteForgottenPasswordToken(id: $tokenId) {
-                id
-              }
-            }
-          `,
-          variables: { tokenId },
-        });
+//         await context.executeGraphQL({
+//           context: context.createContext({ skipAccessControl: true }),
+//           query: `mutation DeletePasswordToken($tokenId: ID!) {
+//               deleteForgottenPasswordToken(id: $tokenId) {
+//                 id
+//               }
+//             }
+//           `,
+//           variables: { tokenId },
+//         });
 
-        return true;
-      },
-    },
-  ],
-};
+//         return true;
+//       },
+//     },
+//   ],
+// };

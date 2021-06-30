@@ -1,7 +1,13 @@
 require('dotenv').config();
 const { CloudinaryAdapter } = require('@keystonejs/file-adapters');
 const { CloudinaryImage } = require('@keystonejs/fields-cloudinary-image');
-const {userIsAdmin, userIsAdminOrOwner, userOwnsItem, isLoggedIn} = require('../access');
+const {
+  userIsAdmin,
+  userIsAdminOrOwner,
+  userOwnsItem,
+  isLoggedIn,
+  permissions,
+} = require('../access');
 
 const { Text, Relationship, adminConfig } = require('@keystonejs/fields');
 
@@ -31,6 +37,12 @@ const ProductImage = {
         },
       },
     },
+  },
+  access: {
+    create: isLoggedIn,
+    read:  true,
+    update: permissions.canManageProducts,
+    delete: permissions.canManageProducts,
   },
 };
 

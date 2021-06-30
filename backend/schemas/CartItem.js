@@ -1,4 +1,10 @@
-const {userIsAdmin, userIsAdminOrOwner, userOwnsItem, isLoggedIn} = require('../access');
+const {
+  userIsAdmin,
+  userIsAdminOrOwner,
+  userOwnsItem,
+  isLoggedIn,
+  rules,
+} = require('../access');
 
 const {
   Text,
@@ -25,7 +31,6 @@ const CartItem = {
       type: Relationship,
       ref: 'Product', // reference to data type Product
     },
-
     user: {
       type: Relationship,
       ref: 'User.cart', // two way relationship
@@ -33,12 +38,9 @@ const CartItem = {
   },
   access: {
     create: isLoggedIn,
-    // read: rules.canOrder,
-    // update: rules.canOrder,
-    // delete: rules.canOrder,
-    read: true,
-    update: true,
-    delete: true,
+    read: rules.canOrder,
+    update: rules.canOrder,
+    delete: rules.canOrder,
   },
 };
 

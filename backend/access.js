@@ -1,105 +1,133 @@
- const { permissionsList } = require("./schemas/Fields");
+const { permissionsList } = require('./schemas/Fields');
+const { createItem, getItem } = require('@keystonejs/server-side-graphql-client');
+const getUser =   async({itemId , context}) => {
+  const user = await getItem({
+    context,
+    listKey: 'User',
+    itemId,
+    returnFields: 'id, name role',
+  });
+ return user // User 123: { id: '123', name: 'Aman' }
+} 
+const isLoggedIn = ({ authentication: { item: user } }) => !!user;
 
+// Access control functions
+const userIsAdmin = ({ authentication: { item: user } }) => Boolean(user && user.isAdmin);
 
-
- const isLoggedIn = ({ authentication: { item: user } }) => {
-  getUser({ itemId: user.id })
-
-      return !!user
+const userOwnsItem = ({ authentication: { item: user } }) => {
+  if (!user) {
+    return false;
   }
-   // Access control functions
-  const userIsAdmin = ({ authentication: { item: user } }) => Boolean(user && user.isAdmin)
-  
-  const userOwnsItem = ({ authentication: { item: user } }) => {
-    if (!user) {
-      return false;
-    }
-     // Instead of a boolean, you can return a GraphQL query:
-    // https://www.keystonejs.com/api/access-control#graphqlwhere
-    return { id: user.id };
-  };
-  
-  const userIsAdminOrOwner = auth => {
-    console.log(auth)
-    const isAdmin = userIsAdmin(auth);
-    const isOwner = userOwnsItem(auth);
-    return isAdmin ? isAdmin : isOwner;
-  };
+  return { id: user.id };
+};
 
+const userIsAdminOrOwner = (auth) => {
+  const admin = access.isAdmin(auth);
+  const owner = access.isOwner(auth);
 
-  const generatedPermissions = Object.fromEntries(
-    permissionsList.map((permission) => [
-      permission,
-      function ({ authentication: { item: user } }) {
-        return !!user?.role?.[permission];
-      },
-    ])
-  );
+  return admin ? admin : owner;
+};
+
+const generatedPermissions = Object.fromEntries(
+  permissionsList.map((permission) => [
+    permission,
+    async function ({ authentication: { item: user } , context}) {
+      const currentUser = context?.authedItem;
+      if(context) {
+        const { errors, data } = await context.executeGraphQL({
+          context: context.createContext({ skipAccessControl: true }),
+          query: `
+          query ($id: ID){
+            User(where:{id: $id}){
+              id
+              role{
+                canManageProducts
+                canSeeOtherUsers
+                canManageUsers
+                canManageRoles
+                canManageCart
+                canManageOrders
+              }
+            }
+          }` ,
+          variables: { id : currentUser.id },
+        });
+        const User =  JSON.parse(JSON.stringify(data.User));
+       
+        return !!User?.role?.[permission];
+      } else{
+        return false
+      }
+    },
+  ])
+);
 const permissions = {
   ...generatedPermissions,
-  morePermission({ authentication: { item: user } }) {
-    return user?.name.includes('Khan');
+  // morePermission({ authentication: { item: user } }) {
+  //   return user?.name.includes('Khan');
+  // },
+};
+const rules = {
+  canManageProducts({ authentication: { item: user } }) {
+    if (!isLoggedIn({ authentication: { item: user } })) {
+      return false;
+    }
+    // 1. Do they have the permission of canManageProducts
+    if (permissions.canManageProducts({ authentication: { item: user } })) {
+      return true;
+    }
+    // 2. If not, do they own this item?
+    return userIsAdminOrOwner({ authentication: { item: user } });
+  },
+  canOrder() {
+    if (!isLoggedIn({ authentication: { item: user } })) {
+      return false;
+    }
+    // 1. Do they have the permission of canManageProducts
+    if (permissions.canManageCart({ authentication: { item: user } })) {
+      return true;
+    }
+    // 2. If not, do they own this item?
+    return  userIsAdminOrOwner({ authentication: { item: user } })
+  },
+  canManageOrderItems({ authentication: { item: user } }) {
+    if (!isLoggedIn({ authentication: { item: user } })) {
+      return false;
+    }
+    // 1. Do they have the permission of canManageProducts
+    if (permissions.canManageCart({ authentication: { item: user } })) {
+      return true;
+    }
+    // 2. If not, do they own this item?
+    return  userIsAdminOrOwner({ authentication: { item: user } })
+  },
+  canReadProducts({ authentication: { item: user } }) {
+    if (!isLoggedIn({ authentication: { item: user } })) {
+      return false;
+    }
+    if (permissions.canManageProducts({ authentication: { item: user } })) {
+      return true; // They can read everything!
+    }
+    // They should only see available products (based on the status field)
+    return { status: 'AVAILABLE' };
+  },
+  canManageUsers({ authentication: { item: user } }) {
+    if (!isLoggedIn({ authentication: { item: user } })) {
+      return false;
+    }
+    if (permissions.canManageUsers({ authentication: { item: user } })) {
+      return true;
+    }
+    // Otherwise they may only update themselves!
+    return  userIsAdminOrOwner({ authentication: { item: user } })
   },
 };
-  const  rules = {
-    canManageProducts() {
-      if (!isLoggedIn()) {
-        return false;
-      }
-      // 1. Do they have the permission of canManageProducts
-      if (permissions.canManageProducts({ authentication: { item: user } })) {
-        return true;
-      }
-      // 2. If not, do they own this item?
-      return userOwnsItem();
-    },
-    canOrder() {
-      if (!isLoggedIn()) {
-        return false;
-      }
-      // 1. Do they have the permission of canManageProducts
-      if (permissions.canManageCart({ authentication: { item: user } })) {
-        return true;
-      }
-      // 2. If not, do they own this item?
-      return userOwnsItem();
-    },
-    canManageOrderItems() {
-      if (!isLoggedIn()) {
-        return false;
-      }
-      // 1. Do they have the permission of canManageProducts
-      if (permissions.canManageCart({ authentication: { item: user } })) {
-        return true;
-      }
-      // 2. If not, do they own this item?
-      return userOwnsItem();
-    },
-    canReadProducts() {
-      if (!isLoggedIn()) {
-        return false;
-      }
-      if (permissions.canManageProducts({ authentication: { item: user } })) {
-        return true; // They can read everything!
-      }
-      // They should only see available products (based on the status field)
-      return { status: 'AVAILABLE' };
-    },
-    canManageUsers() {
-      if (!isLoggedIn()) {
-        return false;
-      }
-      if (permissions.canManageUsers({ authentication: { item: user } })) {
-        return true;
-      }
-      // Otherwise they may only update themselves!
-      return userOwnsItem();
-    },
-  };
-  
- 
 
-
-
- 
-  module.exports={userIsAdmin, userIsAdminOrOwner, userOwnsItem, isLoggedIn , rules, permissions}
+module.exports = {
+  userIsAdmin,
+  userIsAdminOrOwner,
+  userOwnsItem,
+  isLoggedIn,
+  rules,
+  permissions,
+};

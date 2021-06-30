@@ -4,22 +4,20 @@ const { PasswordAuthStrategy } = require('@keystonejs/auth-password');
 const { GraphQLApp } = require('@keystonejs/app-graphql');
 const { AdminUIApp } = require('@keystonejs/app-admin-ui');
 const initialiseData = require('./seed-data/index');
-const ProductSchema = require('./schemas/Product');
-const UserSchema = require('./schemas/User');
+const Product = require('./schemas/Product');
+const User = require('./schemas/User');
 const ProductImage = require('./schemas/ProductImage');
 const { MongooseAdapter: Adapter } = require('@keystonejs/adapter-mongoose');
-const PROJECT_NAME = 'Sando Store';
 const adapterConfig = { mongoUri: `${process.env.DATABASE_URL}` };
-const { ForgottenPasswordToken, customSchema } = require('./schemas/PasswordReset');
-// const { userIsAdmin, userIsAdminOrOwner, isLoggedIn } = require('./access');
-const { sendEmail } = require('./emails');
-const CartItem = require('./schemas/CartItem');
-const { customCartSchema } = require('./mutations');
+const { userIsAdmin, userIsAdminOrOwner, isLoggedIn } = require('./access');
+const { customSchemasMutations } = require('./mutations');
 const Order = require('./schemas/Order');
 const OrderItem = require('./schemas/OrderItem');
 const Role = require('./schemas/Role');
-const { isLoggedIn } = require('./access');
+const CartItem = require('./schemas/CartItem');
+const { ForgottenPasswordToken, customSchema } = require('./schemas/PasswordReset');
 
+const PROJECT_NAME = 'Sando Store';
 const keystone = new Keystone({
   adapter: new Adapter(adapterConfig),
   cookie: {
@@ -31,47 +29,46 @@ const keystone = new Keystone({
   // onConnect:   initialiseData,
 });
 
-
- 
 keystone.createList('Product', {
-  fields: ProductSchema.fields,
+  fields: Product.fields,
   labelField: 'name',
-  access:  ProductSchema.access
+  access: Product.access,
 });
 
 keystone.createList('ProductImage', {
   fields: ProductImage.fields,
-  // access: ProductImage.access
+  access: ProductImage.access,
 });
 
 keystone.createList('User', {
-  fields: UserSchema.fields,
+  fields: User.fields,
   // List-level access controls
-  access: UserSchema.access,
-  hooks: UserSchema.hooks,
+  access: User.access,
+  hooks: User.hooks,
 });
 keystone.createList('CartItem', {
   fields: CartItem.fields,
   // List-level access controls
-  // access: CartItem.access,
+  access: CartItem.access,
 });
 keystone.createList('OrderItem', {
   fields: OrderItem.fields,
   // List-level access controls
-  // access: OrderItem.access
+  access: OrderItem.access,
 });
 keystone.createList('Order', {
   fields: Order.fields,
   // List-level access controls
-  // access: Order.access
+  access: Order.access,
 });
 keystone.createList('Role', {
   fields: Role.fields,
   // List-level access controls
+  access: Role.access
 });
 keystone.createList('ForgottenPasswordToken', ForgottenPasswordToken);
-keystone.extendGraphQLSchema(customCartSchema);
-keystone.extendGraphQLSchema(customSchema);
+keystone.extendGraphQLSchema(customSchemasMutations);
+// keystone.extendGraphQLSchema(customSchema);
 
 const authStrategy = keystone.createAuthStrategy({
   type: PasswordAuthStrategy,
@@ -84,18 +81,6 @@ const authStrategy = keystone.createAuthStrategy({
 });
 
 
-const { createItem , getItem} = require('@keystonejs/server-side-graphql-client');
-   const getUser = async ({ itemId }) => {
-  const user = await getItem({
-    context,
-    listKey: 'User',
-    itemId,
-    returnFields: 'id, name role',
-  });
-  console.log(user); // User 123: { id: '123', name: 'Aman' }
-};
-
-
 
 module.exports = {
   keystone,
@@ -105,9 +90,7 @@ module.exports = {
       name: PROJECT_NAME,
       enableDefaultRoute: true,
       authStrategy,
-      isAccessAllowed:({ authentication: { item: user } }) => {
-          return !!user
-        }
+      isAccessAllowed: isLoggedIn
     }),
   ],
 };

@@ -6,11 +6,15 @@ const {
   Relationship,
 } = require('@keystonejs/fields');
 const { Wysiwyg } = require('@keystonejs/fields-wysiwyg-tinymce');
-const {userIsAdmin, userIsAdminOrOwner, userOwnsItem, isLoggedIn} = require('../access');
+const {
+  userIsAdmin,
+  userIsAdminOrOwner,
+  userOwnsItem,
+  isLoggedIn,
+  rules,
+} = require('../access');
 
 const OrderItem = {
-  // TODO
-  // access:
   fields: {
     name: {
       type: Text,
@@ -41,6 +45,12 @@ const OrderItem = {
       type: Relationship,
       ref: 'Order.items',
     },
+  },
+  access: {
+    create: isLoggedIn,
+    read: rules.canManageOrderItems,
+    update:  false,
+    delete:   false,
   },
 };
 

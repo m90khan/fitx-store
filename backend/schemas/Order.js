@@ -8,15 +8,19 @@ const {
 } = require('@keystonejs/fields');
 const { Wysiwyg } = require('@keystonejs/fields-wysiwyg-tinymce');
 const formatMoney = require('../utils/formatMoney');
-const {userIsAdmin, userIsAdminOrOwner, userOwnsItem, isLoggedIn} = require('../access');
+const {
+  userIsAdmin,
+  userIsAdminOrOwner,
+  userOwnsItem,
+  isLoggedIn,
+  rules,
+} = require('../access');
 const Order = {
   fields: {
-    label: {
-      type: Virtual,
-      resolver: async (item) => {
-        return `${formatMoney(item.total)}`;
-      },
-    },
+    // label: {
+    //   type: Virtual,
+    //   resolver: (item) => `${formatMoney(item.total)}`,
+    // },
     total: {
       type: Integer,
       isRequired: true,
@@ -34,6 +38,12 @@ const Order = {
     charge: {
       type: Text,
     },
+  },
+  access: {
+    create: isLoggedIn,
+    read: rules.canOrder,
+    update:   false,
+    delete:   false,
   },
 };
 

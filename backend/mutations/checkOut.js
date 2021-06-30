@@ -71,22 +71,21 @@ async function checkout(root, { token }, context) {
     };
     return orderItem;
   });
-  console.log(orderItems);
-  console.log('gonna create the order');
+   console.log('gonna create the order');
 
-   // 5. Create the order and return it
-  const  order  = await createItem({
+  // 5. Create the order and return it
+  const order = await createItem({
     context,
     listKey: 'Order',
     item: {
       total: charge.amount,
       charge: charge.id,
-      items: {create: orderItems},
-      user:{connect: {id: currentUser.id}},
+      items: { create: orderItems },
+      user: { connect: { id: currentUser.id } },
     },
     returnFields: `id`,
   });
-   
+
   /*const { errors, data: order } = await context.executeGraphQL({
     context: context.createContext({ skipAccessControl: true }),
     query: `
@@ -105,7 +104,7 @@ async function checkout(root, { token }, context) {
       userId: currentUser.id,
     },
   });*/
-   
+
   console.log(order);
   // 6. Clean up any old cart item
   const cartItemIds = jData.User.cart.map((cartItem) => cartItem.id);
@@ -131,5 +130,3 @@ async function checkout(root, { token }, context) {
 }
 
 module.exports = checkout;
-
- 

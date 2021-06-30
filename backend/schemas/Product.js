@@ -7,11 +7,16 @@ const {
 } = require('@keystonejs/fields');
 const { Wysiwyg } = require('@keystonejs/fields-wysiwyg-tinymce');
 
-const {userIsAdmin, userIsAdminOrOwner, userOwnsItem, isLoggedIn, rules} = require('../access');
-
+const {
+  userIsAdmin,
+  userIsAdminOrOwner,
+  userOwnsItem,
+  isLoggedIn,
+  rules,
+} = require('../access');
 
 const Product = {
-    fields: {
+  fields: {
     name: {
       type: Text,
       isRequired: true,
@@ -28,7 +33,7 @@ const Product = {
     photo: {
       type: Relationship,
       ref: 'ProductImage.product',
-      labelField: 'Source', 
+      labelField: 'Source',
       adminConfig: {
         displayMode: 'cards',
         cardFields: ['image', 'altText'],
@@ -59,16 +64,16 @@ const Product = {
       type: Relationship,
       ref: 'User.products',
       defaultValue: ({ authentication: { item: user } }) => ({
-        connect: { id: user.id},
+        connect: { id: user.id },
       }),
     },
-   },
-   access: {
-    read: true,
-    update: true,
+  },
+  access: {
     create: isLoggedIn,
-    delete: userIsAdmin,
-   },
+    read: rules.canReadProducts,
+    update: rules.canManageProducts,
+    delete: rules.canManageProducts,
+  },
 };
 
 module.exports = Product;
