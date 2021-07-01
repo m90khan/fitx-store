@@ -1,46 +1,55 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useReducer } from 'react';
 
-const LocalStateContext = createContext(null);
+const LocalStateContext = createContext({
+  cart: false,
+  search: false,
+});
+const LocalDispatchContext = createContext(null);
+
 const LocalStateProvider = LocalStateContext.Provider;
+const LocalDispatchProvider = LocalDispatchContext.Provider;
+function reducer(state, action) {
+  switch (action.type) {
+    case 'CART':
+      return { ...state, cart: action.setCart };
+    case 'SEARCH':
+      return { ...state, search: action.setSearch };
+    default:
+      throw new Error();
+  }
+}
 
-function CartStateProvider({ children }) {
+export const GlobalStateProvider = ({ children }) => {
   // This is our own custom provider! We will store data (state) and functionality (updaters)
   // in here and anyone can access it via the consumer!
 
   // Closed cart by default
-  const [cartOpen, setCartOpen] = useState(false);
+  const [state, dispatch] = useReducer(reducer, {
+    cart: false,
+    search: false,
+  });
 
-  function toggleCart() {
-    setCartOpen(!cartOpen);
-  }
+  // function toggleCart() {
+  //   setCartOpen(!cartOpen);
+  // }
 
-  function closeCart() {
-    setCartOpen(false);
-  }
+  // function closeCart() {
+  //   setCartOpen(false);
+  // }
 
-  function openCart() {
-    setCartOpen(true);
-  }
+  // function openCart() {
+  //   setCartOpen(true);
+  // }
 
   return (
-    <LocalStateProvider
-      value={{
-        cartOpen,
-        setCartOpen,
-        toggleCart,
-        closeCart,
-        openCart,
-      }}
-    >
-      {children}
-    </LocalStateProvider>
+    <LocalDispatchProvider value={dispatch}>
+      <LocalStateProvider value={state}>{children}</LocalStateProvider>
+    </LocalDispatchProvider>
   );
-}
+};
 
 // make a custom hook for accessing the cart local state
-function useCart() {
-  // We use a consumer here to access the local state
-  const all = useContext(LocalStateContext);
-  return all;
-}
-export { CartStateProvider, useCart };
+
+export const useGlobalStateContext = () => useContext(LocalStateContext);
+
+export const useGlobalDispatchContext = () => useContext(LocalDispatchContext);

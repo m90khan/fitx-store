@@ -1,9 +1,9 @@
 import React from 'react';
 import calculateCartTotal from '../../utils/calculateCartTotal';
 import formatCurrency from '../../utils/formatCurrency';
+import CheckoutBtn from '../Buttons/CheckoutBtn';
 import getUser from '../GetUser';
 import Alert from '../lib/Alert';
-import CheckoutBtn from './CheckoutBtn';
 const FullCart = () => {
   const user = getUser();
   if (!user || user.cart === null) {

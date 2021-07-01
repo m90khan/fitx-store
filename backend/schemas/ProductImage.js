@@ -37,12 +37,13 @@ const ProductImage = {
         },
       },
     },
+ 
   },
   access: {
     create: isLoggedIn,
     read:  true,
-    update: permissions.canManageProducts,
-    delete: permissions.canManageProducts,
+    update: userIsAdminOrOwner,
+    delete: userIsAdminOrOwner
   },
 };
 

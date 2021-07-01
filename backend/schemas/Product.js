@@ -41,7 +41,18 @@ const Product = {
         inlineEdit: { fields: ['image', 'altText'] },
       },
     },
-
+    gallery: {
+      type: Relationship,
+      ref: 'ProductImage',
+      labelField: 'Gallery',
+      many:true,
+      adminConfig: {
+        displayMode: 'cards',
+        cardFields: ['image', 'altText'],
+        inlineCreate: { fields: ['image', 'altText'] },
+        inlineEdit: { fields: ['image', 'altText'] },
+      },
+    },
     status: {
       type: Select,
       options: [
@@ -70,9 +81,9 @@ const Product = {
   },
   access: {
     create: isLoggedIn,
-    read: rules.canReadProducts,
-    update: rules.canManageProducts,
-    delete: rules.canManageProducts,
+    read: true,
+    update: isLoggedIn,
+    delete: userIsAdminOrOwner,
   },
 };
 

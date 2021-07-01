@@ -37,10 +37,10 @@ const CartItem = {
     },
   },
   access: {
-    create: isLoggedIn,
-    read: rules.canOrder,
-    update: rules.canOrder,
-    delete: rules.canOrder,
+    create: true,
+    read: isLoggedIn,
+    update:isLoggedIn,
+    delete: userIsAdminOrOwner,
   },
 };
 

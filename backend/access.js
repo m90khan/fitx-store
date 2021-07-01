@@ -37,27 +37,26 @@ const generatedPermissions = Object.fromEntries(
         const { errors, data } = await context.executeGraphQL({
           context: context.createContext({ skipAccessControl: true }),
           query: `
-          query ($id: ID){
-            User(where:{id: $id}){
+          query{
+            authenticatedUser{
               id
+              email
               role{
                 canManageProducts
                 canSeeOtherUsers
-                canManageUsers
-                canManageRoles
-                canManageCart
                 canManageOrders
+                canManageRoles
+                canManageUsers
+                canManageCart
               }
             }
           }` ,
-          variables: { id : currentUser.id },
+         
         });
-        const User =  JSON.parse(JSON.stringify(data.User));
+        const User =  JSON.parse(JSON.stringify(data.authenticatedUser));
        
         return !!User?.role?.[permission];
-      } else{
-        return false
-      }
+      }  
     },
   ])
 );
@@ -88,7 +87,7 @@ const rules = {
       return true;
     }
     // 2. If not, do they own this item?
-    return  userIsAdminOrOwner({ authentication: { item: user } })
+    return  userOwnsItem({ authentication: { item: user } })
   },
   canManageOrderItems({ authentication: { item: user } }) {
     if (!isLoggedIn({ authentication: { item: user } })) {
@@ -102,9 +101,7 @@ const rules = {
     return  userIsAdminOrOwner({ authentication: { item: user } })
   },
   canReadProducts({ authentication: { item: user } }) {
-    if (!isLoggedIn({ authentication: { item: user } })) {
-      return false;
-    }
+
     if (permissions.canManageProducts({ authentication: { item: user } })) {
       return true; // They can read everything!
     }

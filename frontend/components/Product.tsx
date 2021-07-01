@@ -1,8 +1,7 @@
-import React from 'react';
-import Image from 'next/image';
-import formatCurrency from '../utils/formatCurrency';
 import Link from 'next/link';
-import AddToCartBtn from './Cart/AddToCartBtn';
+import React from 'react';
+import formatCurrency from '../utils/formatCurrency';
+import AddToCartBtn from './Buttons/AddToCartBtn';
 const Product = ({ product }) => {
   return (
     <div className=' p-6 flex flex-col shadow-lg sm:min-w-full' key={product.id}>

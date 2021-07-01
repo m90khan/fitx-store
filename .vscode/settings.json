@@ -26,9 +26,6 @@
   "editor.codeActionsOnSave": {
     "source.fixAll": true
   },
-  "prettier.disableLanguages": [
-    "javascript",
-    "javascriptreact"
-  ],
+  "prettier.disableLanguages": ["javascript", "javascriptreact"],
   "peacock.color": "#FF2C70"
 }

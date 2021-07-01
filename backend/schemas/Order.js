@@ -25,7 +25,10 @@ const Order = {
       type: Integer,
       isRequired: true,
     },
-
+    shipping:{
+      type: Text,
+      isRequired: true,
+    },
     items: {
       type: Relationship,
       ref: 'OrderItem.order',
@@ -38,10 +41,23 @@ const Order = {
     charge: {
       type: Text,
     },
+    status: {
+        type: Select,
+        options: [
+          { label: 'Pending', value: 'PENDING' },
+          { label: 'Processing', value: 'PROCESSING' },
+          { label: 'Delivered', value: 'DELIVERED' },
+        ],
+        defaultValue: 'DRAFT',
+        ui: {
+          displayMode: 'segmented-control',
+          createView: { fieldMode: 'hidden' },
+        },
+      },   
   },
   access: {
     create: isLoggedIn,
-    read: rules.canOrder,
+    read: true,
     update:   false,
     delete:   false,
   },

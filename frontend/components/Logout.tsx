@@ -1,8 +1,7 @@
 import { useMutation } from '@apollo/client';
+import gql from 'graphql-tag';
 import Router from 'next/router';
 import { CURRENT_USER_QUERY } from './GetUser';
-import gql from 'graphql-tag';
-import Alert from './lib/Alert';
 
 const LOGOUT_MUTATION = gql`
   mutation LOGOUT_MUTATION {
@@ -36,8 +35,8 @@ const Logout = () => {
       )} */}
       <a onClick={handleSubmit} className='inline-block no-underline hover:text-black'>
         <svg
-          width='24'
-          height='24'
+          width='22'
+          height='22'
           viewBox='0 0 16 20'
           fill='none'
           xmlns='http://www.w3.org/2000/svg'

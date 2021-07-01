@@ -8,7 +8,6 @@ const Product = require('./schemas/Product');
 const User = require('./schemas/User');
 const ProductImage = require('./schemas/ProductImage');
 const { MongooseAdapter: Adapter } = require('@keystonejs/adapter-mongoose');
-const adapterConfig = { mongoUri: `${process.env.DATABASE_URL}` };
 const { userIsAdmin, userIsAdminOrOwner, isLoggedIn } = require('./access');
 const { customSchemasMutations } = require('./mutations');
 const Order = require('./schemas/Order');
@@ -18,6 +17,7 @@ const CartItem = require('./schemas/CartItem');
 const { ForgottenPasswordToken, customSchema } = require('./schemas/PasswordReset');
 
 const PROJECT_NAME = 'Sando Store';
+const adapterConfig = { mongoUri: `${process.env.DATABASE_URL}` };
 const keystone = new Keystone({
   adapter: new Adapter(adapterConfig),
   cookie: {

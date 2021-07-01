@@ -1,14 +1,13 @@
-import { ThemeProvider, DefaultTheme } from 'styled-components';
 import { ApolloProvider } from '@apollo/client';
-
-import GlobalStyle from './../styles/GlobalStyles';
-import { AppProps } from 'next/app';
-import NProgress from 'nprogress';
 import Router from 'next/router';
-import './../styles/nprogress.css';
-import withData from '../utils/withData';
+import NProgress from 'nprogress';
+import { DefaultTheme } from 'styled-components';
 import 'tailwindcss/tailwind.css';
-import { CartStateProvider } from './../utils/globalContext';
+import withData from '../utils/withData';
+import GlobalStyle from './../styles/GlobalStyles';
+import './../styles/nprogress.css';
+import { GlobalStateProvider } from './../utils/globalContext';
+
 const theme: DefaultTheme = {
   colors: {
     primary: '#0070f3',
@@ -21,10 +20,10 @@ function MyApp({ Component, pageProps, apollo }) {
   return (
     <>
       <ApolloProvider client={apollo}>
-        <CartStateProvider>
+        <GlobalStateProvider>
           <Component {...pageProps} />
           <GlobalStyle />
-        </CartStateProvider>
+        </GlobalStateProvider>
       </ApolloProvider>
     </>
   );

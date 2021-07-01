@@ -22,10 +22,10 @@ const Role = {
     },
   },
   access: {
-    create:permissions.canManageRoles,
-    read: permissions.canManageRoles,
-    update: permissions.canManageRoles,
-    delete: permissions.canManageRoles,
+    create: userIsAdmin,
+    read: userIsAdmin,
+    update: userIsAdmin,
+    delete: userIsAdmin
   },
 };
 

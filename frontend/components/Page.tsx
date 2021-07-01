@@ -1,11 +1,11 @@
-import Head from 'next/head';
-import { FC, ReactNode, useState } from 'react';
-import styled from 'styled-components';
 import media from 'css-in-js-media';
-
-import { useRouter, NextRouter } from 'next/router';
-import Header from './Header/Index';
+import Head from 'next/head';
+import { NextRouter, useRouter } from 'next/router';
+import { ReactNode } from 'react';
+import styled from 'styled-components';
+import { useGlobalStateContext } from '../utils/globalContext';
 import Footer from './Footer';
+import Header from './Header/Index';
 import Search from './Search';
 
 interface Props {
@@ -17,7 +17,7 @@ interface Props {
 }
 export default function Page({ title, keywords, description, children }: Props) {
   const router: NextRouter = useRouter();
-
+  const { search } = useGlobalStateContext();
   return (
     <>
       <Head>
@@ -31,7 +31,7 @@ export default function Page({ title, keywords, description, children }: Props) 
         />
       </Head>
       <Header />
-      <Search />
+      {search && <Search />}
 
       <Container>{children}</Container>
       <Footer />
@@ -45,7 +45,7 @@ Page.defaultProps = {
 };
 
 const Container = styled.div`
-  margin: 4rem auto;
+  margin: 1rem auto;
   min-height: 70vh;
   padding: 0 1rem;
   ${media('<=phone')} {

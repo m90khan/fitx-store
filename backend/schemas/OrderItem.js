@@ -48,7 +48,7 @@ const OrderItem = {
   },
   access: {
     create: isLoggedIn,
-    read: rules.canManageOrderItems,
+    read: isLoggedIn,
     update:  false,
     delete:   false,
   },

@@ -53,11 +53,11 @@ const User = {
   },
   access: {
     create:   true,
-    read:  rules.canManageUsers,
-    update:  rules.canManageUsers,
+    read:  isLoggedIn,
+    update:  userIsAdminOrOwner,
     // only people with the permission can delete themselves!
     // You can't delete yourself
-    delete: permissions.canManageUsers,
+    delete: userIsAdmin,
   },
   hooks: {
     afterChange: async ({ updatedItem, existingItem }) => {

@@ -1,23 +1,33 @@
-import Link from 'next/link';
-import styled from 'styled-components';
-import media from 'css-in-js-media';
-import { useState } from 'react';
-import CartMenu from './CartMenu';
-import getUser from '../GetUser';
 import Router from 'next/router';
+import { useState } from 'react';
+import {
+  useGlobalDispatchContext,
+  useGlobalStateContext,
+} from '../../utils/globalContext';
+import getUser from '../GetUser';
 import Logout from '../Logout';
-import { useContext } from 'react';
-import { useCart } from '../../utils/globalContext';
-
+import SearchBtn from './../Buttons/SearchBtn';
+import CartMenu from './CartMenu';
 export default function Header() {
   const [menu, setMenu] = useState(false);
   const user = getUser();
   const [showCart, setShowCart] = useState(false);
+  const { cart } = useGlobalStateContext();
+  const dispatch = useGlobalDispatchContext();
 
-  const { toggleCart, cartOpen } = useCart();
   const menuClassName = `${
     !menu && 'hidden'
   } delay-500 md:flex md:items-center md:w-auto w-full order-2 md:order-1`;
+
+  const handleCart = () => {
+    console.log(cart);
+    if (!cart) {
+      dispatch({ type: 'CART', setCart: true });
+    } else {
+      dispatch({ type: 'CART', setCart: false });
+    }
+  };
+
   return (
     <>
       <nav className='relative w-full z-30 top-0 py-1 shadow-xl'>
@@ -118,7 +128,7 @@ export default function Header() {
           <div className='order-3 md:order-3 flex items-center'>
             {user && <Logout />}
             <a
-              className='inline-block  pl-3 no-underline hover:text-black'
+              className='inline-block  pl-3 no-underline hover:text-black cursor-pointer'
               onClick={() =>
                 Router.push({
                   pathname: `/account/login`,
@@ -140,7 +150,7 @@ export default function Header() {
             <a
               className=' relative pl-3 inline-block no-underline hover:text-black'
               href='#'
-              onClick={toggleCart}
+              onClick={handleCart}
             >
               <div className='absolute text-xs rounded-full -mt-1 -mr-2 px-1 font-bold top-0 right-0 bg-red-700 text-white'>
                 {user && user.cart.length}
@@ -158,9 +168,10 @@ export default function Header() {
                 <circle cx='17.5' cy='18.5' r='1.5' />
               </svg>
             </a>
+            <SearchBtn />
           </div>
         </div>
-        {cartOpen && <CartMenu />}
+        {cart && <CartMenu />}
       </nav>
     </>
   );
