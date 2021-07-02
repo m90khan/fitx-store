@@ -5,7 +5,6 @@ import gql from 'graphql-tag';
 import { useRouter } from 'next/router';
 import nProgress from 'nprogress';
 import { useState } from 'react';
-import { useCart } from '../../utils/globalContext';
 import { CURRENT_USER_QUERY } from '../GetUser';
 import Alert from '../lib/Alert';
 
@@ -36,7 +35,6 @@ function CheckoutForm() {
   const stripe = useStripe();
   const elements = useElements();
   const router = useRouter();
-  const { closeCart } = useCart();
   const [checkout, { error: graphQLError }] = useMutation(CREATE_ORDER_MUTATION, {
     refetchQueries: [{ query: CURRENT_USER_QUERY }],
   });

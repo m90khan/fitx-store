@@ -20,7 +20,6 @@ export default function Header() {
   } delay-500 md:flex md:items-center md:w-auto w-full order-2 md:order-1`;
 
   const handleCart = () => {
-    console.log(cart);
     if (!cart) {
       dispatch({ type: 'CART', setCart: true });
     } else {
@@ -152,7 +151,7 @@ export default function Header() {
               href='#'
               onClick={handleCart}
             >
-              <div className='absolute text-xs rounded-full -mt-1 -mr-2 px-1 font-bold top-0 right-0 bg-red-700 text-white'>
+              <div className='  absolute text-xs rounded-full -mt-1 -mr-2 px-1 font-bold top-0 right-0 bg-gray-900 text-white'>
                 {user && user.cart.length}
               </div>
 

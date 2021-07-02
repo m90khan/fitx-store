@@ -4,8 +4,11 @@ const {
   Integer,
   adminConfig,
   Relationship,
+  DateTimeUtc,
 } = require('@keystonejs/fields');
 const { Wysiwyg } = require('@keystonejs/fields-wysiwyg-tinymce');
+const { createdAt, updatedAt, format,atTracking   } = require('@keystonejs/list-plugins');
+const { AuthedRelationship } = require('@keystonejs/fields-authed-relationship');
 
 const {
   userIsAdmin,
@@ -72,19 +75,33 @@ const Product = {
       isRequired: true,
     },
     user: {
-      type: Relationship,
+      type: AuthedRelationship,
       ref: 'User.products',
-      defaultValue: ({ authentication: { item: user } }) => ({
-        connect: { id: user.id },
-      }),
+       //  defaultValue: ({ authentication: { item: user } }) => ( {connect: { id: user.id }}),
+       access:{
+         create: isLoggedIn,
+         read: true,
+         update: isLoggedIn,
+         delete: isLoggedIn
+       }
     },
   },
   access: {
     create: isLoggedIn,
     read: true,
-    update: isLoggedIn,
-    delete: userIsAdminOrOwner,
+    update: userOwnsItem,
+    delete: userIsAdmin,
   },
+  plugins: [
+    atTracking({
+      createdAt: DateTimeUtc,
+      access:{
+        read: true,
+        create: false,
+        update: false
+      }
+      }),
+  ],
 };
 
 module.exports = Product;

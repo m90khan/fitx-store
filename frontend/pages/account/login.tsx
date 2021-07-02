@@ -1,10 +1,11 @@
 import { useMutation } from '@apollo/client';
 import gql from 'graphql-tag';
-import Router from 'next/router';
-import { CURRENT_USER_QUERY } from '../../components/GetUser';
+import { default as router, default as Router } from 'next/router';
+import { useEffect } from 'react';
+import getUser, { CURRENT_USER_QUERY } from '../../components/GetUser';
 import useForm from '../../utils/useForm';
-import Page from './../../components/Page';
 import Alert from './../../components/lib/Alert';
+import Page from './../../components/Page';
 
 const LOGIN_MUTATION = gql`
   mutation LOGIN_MUTATION($email: String!, $password: String!) {
@@ -21,6 +22,8 @@ const LOGIN_MUTATION = gql`
 `;
 
 const Login = () => {
+  const user = getUser();
+
   const { inputs, handleChange, resetForm } = useForm({
     email: '',
     password: '',
@@ -30,12 +33,22 @@ const Login = () => {
     // refetch current logged in users
     refetchQueries: [{ query: CURRENT_USER_QUERY }],
   });
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     await login();
     resetForm(e);
     Router.push({ pathname: '/' });
   };
+  useEffect(() => {
+    if (user) {
+      setTimeout(() => {
+        router.push('/');
+      }, 1000);
+    }
+  }, [user]);
+  if (user)
+    return <Alert text='You are logged in. Cannot access this route' status='Error' />;
   return (
     <Page>
       <form

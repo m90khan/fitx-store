@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import calculateCartTotal from '../../utils/calculateCartTotal';
 import formatCurrency from '../../utils/formatCurrency';
 import CheckoutBtn from '../Buttons/CheckoutBtn';
 import getUser from '../GetUser';
 import Alert from '../lib/Alert';
+import CartItem from './CartItem';
 const FullCart = () => {
   const user = getUser();
+
+  const [total, setTotal] = useState(1000);
+  const [coupon, setCoupon] = useState(0);
   if (!user || user.cart === null) {
     return (
       <Alert
@@ -14,6 +18,10 @@ const FullCart = () => {
       />
     );
   }
+  const handleCoupon = (e) => {
+    e.preventDefault();
+    setCoupon(5000);
+  };
   return (
     <div className='flex justify-center my-6'>
       <div className='flex flex-col w-full p-8 text-gray-800 bg-white shadow-lg pin-r pin-y md:w-4/5 lg:w-4/5'>
@@ -36,49 +44,7 @@ const FullCart = () => {
             <tbody>
               {user &&
                 user.cart.map((cartItem) => (
-                  <tr>
-                    <td className='hidden pb-4 md:table-cell'>
-                      <a href='#'>
-                        <img
-                          src={cartItem.product.photo.image.publicUrlTransformed}
-                          className='w-20 rounded'
-                          alt={cartItem.product.name}
-                        />
-                      </a>
-                    </td>
-                    <td>
-                      <a href='#'>
-                        <p className='mb-2 md:ml-4'>{cartItem.product.name}</p>
-                        <form action='' method='POST'>
-                          <button type='submit' className='text-gray-700 md:ml-4'>
-                            <small>(Remove item)</small>
-                          </button>
-                        </form>
-                      </a>
-                    </td>
-                    <td className='justify-center md:justify-end md:flex mt-6'>
-                      <div className='w-20 h-10'>
-                        <div className='relative flex flex-row w-full h-8'>
-                          <input
-                            type='number'
-                            readOnly
-                            value={cartItem.quantity}
-                            className='w-full font-semibold text-center text-gray-700 bg-gray-200 outline-none focus:outline-none hover:text-black focus:text-black'
-                          />
-                        </div>
-                      </div>
-                    </td>
-                    <td className='hidden text-right md:table-cell'>
-                      <span className='text-sm lg:text-base font-medium'>
-                        {formatCurrency(cartItem.product.price)}
-                      </span>
-                    </td>
-                    <td className='text-right'>
-                      <span className='text-sm lg:text-base font-medium'>
-                        {formatCurrency(cartItem.product.price * cartItem.quantity)}
-                      </span>
-                    </td>
-                  </tr>
+                  <CartItem key={cartItem.id} cartItem={cartItem} />
                 ))}
             </tbody>
           </table>
@@ -93,18 +59,20 @@ const FullCart = () => {
                   If you have a coupon code, please enter it in the box below
                 </p>
                 <div className='justify-center md:flex'>
-                  <form action='' method='POST'>
+                  <form method='POST'>
                     <div className='flex items-center w-full h-13 pl-3 bg-white bg-gray-100 border rounded-full'>
-                      {/* <input
+                      <input
                         type='coupon'
                         name='code'
                         id='coupon'
                         placeholder='Apply coupon'
-                        value='90off'
+                        value='50S05'
+                        readOnly
                         className='w-full bg-gray-100 outline-none appearance-none focus:outline-none active:outline-none'
-                      /> */}
+                      />
                       <button
                         type='submit'
+                        onClick={handleCoupon}
                         className='text-sm flex items-center px-3 py-1 text-white bg-gray-800 rounded-full outline-none md:px-4 hover:bg-gray-700 focus:outline-none active:outline-none'
                       >
                         <svg
@@ -176,7 +144,7 @@ const FullCart = () => {
                     Coupon "90off"
                   </div>
                   <div className='lg:px-4 lg:py-2 m-2 lg:text-lg font-bold text-center text-green-700'>
-                    -133,944.77€
+                    {coupon && formatCurrency(calculateCartTotal(user.cart) - coupon)}
                   </div>
                 </div>
                 <div className='flex justify-between pt-4 border-b'>
@@ -184,23 +152,27 @@ const FullCart = () => {
                     New Subtotal
                   </div>
                   <div className='lg:px-4 lg:py-2 m-2 lg:text-lg font-bold text-center text-gray-900'>
-                    14,882.75€
+                    {formatCurrency(
+                      calculateCartTotal(user.cart) - (coupon ? coupon : 0)
+                    )}
                   </div>
                 </div>
-                <div className='flex justify-between pt-4 border-b'>
+                {/* <div className='flex justify-between pt-4 border-b'>
                   <div className='lg:px-4 lg:py-2 m-2 text-lg lg:text-xl font-bold text-center text-gray-800'>
                     Tax
                   </div>
                   <div className='lg:px-4 lg:py-2 m-2 lg:text-lg font-bold text-center text-gray-900'>
                     2,976.55€
                   </div>
-                </div>
+                </div> */}
                 <div className='flex justify-between pt-4 border-b'>
                   <div className='lg:px-4 lg:py-2 m-2 text-lg lg:text-xl font-bold text-center text-gray-800'>
                     Total
                   </div>
                   <div className='lg:px-4 lg:py-2 m-2 lg:text-lg font-bold text-center text-gray-900'>
-                    17,859.3€
+                    {formatCurrency(
+                      calculateCartTotal(user.cart) - (coupon ? coupon : 0)
+                    )}
                   </div>
                 </div>
                 <CheckoutBtn />

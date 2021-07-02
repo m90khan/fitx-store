@@ -40,7 +40,7 @@ const CartItem = {
     create: true,
     read: isLoggedIn,
     update:isLoggedIn,
-    delete: userIsAdminOrOwner,
+    delete: userOwnsItem,
   },
 };
 

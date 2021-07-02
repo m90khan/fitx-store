@@ -18,7 +18,8 @@ const userOwnsItem = ({ authentication: { item: user } }) => {
   if (!user) {
     return false;
   }
-  return { id: user.id };
+   
+  return true;
 };
 
 const userIsAdminOrOwner = (auth) => {

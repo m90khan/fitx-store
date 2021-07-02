@@ -7,7 +7,7 @@ const CheckoutBtn = () => {
   };
   return (
     <button
-      className='flex justify-center w-full px-10 py-3 mt-6 font-medium text-white uppercase bg-purple-500 rounded-full shadow item-center hover:bg-purple-700 focus:shadow-outline focus:outline-none'
+      className='flex justify-center w-full px-10 py-3 mt-6 font-medium text-white uppercase bg-gray-900 rounded-full shadow item-center hover:bg-gray-700 focus:shadow-outline focus:outline-none'
       onClick={handleSubmit}
     >
       <svg

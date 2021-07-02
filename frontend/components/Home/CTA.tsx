@@ -4,15 +4,15 @@ const CTA = () => {
   return (
     <div className=' mt-10 mb-10'>
       <div
-        className='bg-center   bg-cover'
+        className='bg-top   bg-cover'
         style={{ backgroundImage: 'url(/images/site/cta.jpg)' }}
       >
-        <div className='py-16 md:py-20 text-center flex flex-col items-center text-black	'>
+        <div className='py-16 md:py-40 text-center flex flex-col items-center text-black	'>
           <h3 className='font-butler text-black text-3xl sm:text-4xl tracking-wide'>
-            Let's keep in touch
+            Trending Products
           </h3>
           <p className='font-hk text-black text-lg sm:text-xl pt-3 px-6'>
-            Join our list and save 15% off your first order.
+            Unique Features Of leatest & Trending Poducts
           </p>
           <button className='flex items-center mt-4 px-3 py-2 bg-gray-900 text-white text-sm uppercase font-medium rounded hover:bg-gray-700 focus:outline-none focus:bg-blue-500'>
             <span>Shop Now</span>

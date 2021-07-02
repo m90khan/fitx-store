@@ -33,6 +33,7 @@ keystone.createList('Product', {
   fields: Product.fields,
   labelField: 'name',
   access: Product.access,
+  plugins: Product.plugins
 });
 
 keystone.createList('ProductImage', {

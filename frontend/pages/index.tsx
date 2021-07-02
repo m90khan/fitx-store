@@ -5,7 +5,6 @@ import CTA from '../components/Home/CTA';
 import Features from '../components/Home/Features';
 import HeroCard from '../components/Home/HeroCard';
 import Page from '../components/Page';
-import Pagination from '../components/Pagination';
 import Products from '../components/Products';
 
 const Home = () => {
@@ -16,11 +15,25 @@ const Home = () => {
     <Page>
       <HeroCard />
       <Features />
+
       <Products page={page || 1} />
-      <Pagination page={page || 1} />
+      {/* <Pagination page={page || 1} /> */}
       <CTA />
     </Page>
   );
 };
 
 export default Home;
+
+/*
+Latest Products 
+Featured products
+Shop menu bar
+cart menu transition
+Checkout Page acceess + Shipping address
+Order Page
+Account Page
+
+
+
+*/
