@@ -61,6 +61,7 @@ keystone.createList('Order', {
   fields: Order.fields,
   // List-level access controls
   access: Order.access,
+  plugins: Order.plugins
 });
 keystone.createList('Role', {
   fields: Role.fields,

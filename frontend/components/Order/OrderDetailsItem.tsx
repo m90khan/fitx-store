@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import formatCurrency from '../../utils/formatCurrency';
 
-const OrderItem = ({ item, removeBtn = true, orderId }) => {
+const OrderDetailsItem = ({ item, removeBtn = true, orderId }) => {
   const router = useRouter();
   const handleOrder = () => {
     router.push('/order/' + orderId);
@@ -44,11 +44,8 @@ const OrderItem = ({ item, removeBtn = true, orderId }) => {
           {formatCurrency(item.price * item.quantity)}
         </span>
       </td>
-      <td className='text-right'>
-        <span className='text-sm lg:text-base font-medium'>---</span>
-      </td>
     </tr>
   );
 };
 
-export default OrderItem;
+export default OrderDetailsItem;

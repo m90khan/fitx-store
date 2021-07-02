@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import getUser, { CURRENT_USER_QUERY } from '../../components/GetUser';
 import useForm from '../../utils/useForm';
 import Alert from './../../components/lib/Alert';
+import FormHeader from './../../components/lib/FormHeader';
 import Page from './../../components/Page';
 
 const LOGIN_MUTATION = gql`
@@ -52,37 +53,12 @@ const Login = () => {
   return (
     <Page>
       <form
-        className='flex h-4/5  items-center justify-center'
+        className='flex h-4/5  items-center justify-center py-4'
         method='POST'
         onSubmit={handleSubmit}
       >
-        <div className='grid bg-white rounded-lg shadow-xl w-8/9 md:w-9/12 lg:w-1/3'>
-          <div className='flex justify-center py-4'>
-            <div className='flex bg-purple-200 rounded-full md:p-4 p-2 border-2 border-purple-300'>
-              <svg
-                className='w-8 h-8 text-white'
-                fill='none'
-                stroke='currentColor'
-                viewBox='0 0 24 24'
-                xmlns='http://www.w3.org/2000/svg'
-              >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  strokeWidth='2'
-                  d='M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4'
-                ></path>
-              </svg>
-            </div>
-          </div>
-
-          <div className='flex justify-center'>
-            <div className='flex'>
-              <h1 className='text-gray-600 font-bold md:text-2xl text-xl'>
-                Login Into Your Account
-              </h1>
-            </div>
-          </div>
+        <div className='grid bg-white rounded-lg shadow-xl w-8/9 md:w-9/12 lg:w-1/3 py-4'>
+          <FormHeader text='Login Into Your Account' />
           {error && <Alert text={error.message} />}
           {loading && <Alert text='Loading ...' status='Loggin You In' />}
           <fieldset>
@@ -94,7 +70,7 @@ const Login = () => {
                 Email
               </label>
               <input
-                className='py-2 px-3 rounded-lg border-2 border-purple-300 mt-1 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent'
+                className='py-2 px-3 rounded-lg border-2 border-gray-300 mt-1 focus:outline-none focus:ring-2 focus:ring-gray-600 focus:border-transparent'
                 type='email'
                 placeholder='Email Address'
                 id='email'
@@ -114,7 +90,7 @@ const Login = () => {
                 Password
               </label>
               <input
-                className='py-2 px-3 rounded-lg border-2 border-purple-300 mt-1 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent'
+                className='py-2 px-3 rounded-lg border-2 border-gray-300 mt-1 focus:outline-none focus:ring-2 focus:ring-gray-600 focus:border-transparent'
                 type='password'
                 placeholder='Password'
                 id='password'
@@ -131,7 +107,7 @@ const Login = () => {
                 Cancel
               </button>
               <button
-                className='w-auto bg-purple-500 hover:bg-purple-700 rounded-lg shadow-xl font-medium text-white px-4 py-2'
+                className='w-auto bg-gray-900 hover:bg-gray-700 rounded-lg shadow-xl font-medium text-white px-4 py-2'
                 type='submit'
               >
                 Login
@@ -139,16 +115,15 @@ const Login = () => {
             </div>
           </fieldset>
           <p className='py-2 px-4'>
-            Don't have an account?
+            Don't have an account?{' '}
             <span
-              className='cursor-pointer bg-red-200'
+              className='cursor-pointer bg-gray-900 text-white hover:bg-gray-700 hover:text-white py-1 px-2 rounded-lg'
               onClick={() =>
                 Router.push({
                   pathname: `/account/register`,
                 })
               }
             >
-              {' '}
               Register
             </span>
           </p>

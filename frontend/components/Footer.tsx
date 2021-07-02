@@ -8,38 +8,19 @@ const Footer = () => {
           <div className='sm:col-span-12 lg:col-span-3'>
             <div className='mb-2'>
               <a
-                className='inline-block'
-                aria-label='Cruip'
+                className='uppercase flex tracking-wide no-underline hover:no-underline font-bold text-gray-800 text-xl '
                 href='/'
-                style={{ outline: 'none' }}
               >
                 <svg
-                  className='w-8 h-8'
-                  viewBox='0 0 32 32'
+                  className='fill-current text-gray-800 mr-2'
                   xmlns='http://www.w3.org/2000/svg'
+                  width='24'
+                  height='24'
+                  viewBox='0 0 24 24'
                 >
-                  <defs>
-                    <radialGradient
-                      cx='21.152%'
-                      cy='86.063%'
-                      fx='21.152%'
-                      fy='86.063%'
-                      r='79.941%'
-                      id='footer-logo'
-                    >
-                      <stop stopColor='#4FD1C5' offset='0%'></stop>
-                      <stop stopColor='#81E6D9' offset='25.871%'></stop>
-                      <stop stopColor='#338CF5' offset='100%'></stop>
-                    </radialGradient>
-                  </defs>
-                  <rect
-                    width='32'
-                    height='32'
-                    rx='16'
-                    fill='url(#footer-logo)'
-                    fillRule='nonzero'
-                  ></rect>
+                  <path d='M5,22h14c1.103,0,2-0.897,2-2V9c0-0.553-0.447-1-1-1h-3V7c0-2.757-2.243-5-5-5S7,4.243,7,7v1H4C3.447,8,3,8.447,3,9v11 C3,21.103,3.897,22,5,22z M9,7c0-1.654,1.346-3,3-3s3,1.346,3,3v1H9V7z M5,10h2v2h2v-2h6v2h2v-2h2l0.002,10H5V10z' />
                 </svg>
+                Store
               </a>
             </div>
             <div className='text-sm text-gray-600'>
@@ -69,7 +50,7 @@ const Footer = () => {
                   href='/'
                   style={{ outline: 'none' }}
                 >
-                  Web Studio
+                  Single Sofa
                 </a>
               </li>
               <li className='mb-2'>
@@ -78,7 +59,7 @@ const Footer = () => {
                   href='/'
                   style={{ outline: 'none' }}
                 >
-                  DynamicBox Flex
+                  Three Seater Sofa
                 </a>
               </li>
               <li className='mb-2'>
@@ -87,7 +68,7 @@ const Footer = () => {
                   href='/'
                   style={{ outline: 'none' }}
                 >
-                  Programming Forms
+                  Custom Beds
                 </a>
               </li>
               <li className='mb-2'>
@@ -96,7 +77,7 @@ const Footer = () => {
                   href='/'
                   style={{ outline: 'none' }}
                 >
-                  Integrations
+                  Sofa Sets
                 </a>
               </li>
               <li className='mb-2'>
@@ -105,7 +86,7 @@ const Footer = () => {
                   href='/'
                   style={{ outline: 'none' }}
                 >
-                  Command-line
+                  Chairs
                 </a>
               </li>
             </ul>
@@ -116,19 +97,19 @@ const Footer = () => {
               <li className='mb-2'>
                 <a
                   className='text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out'
-                  href='/'
+                  href='/orders'
                   style={{ outline: 'none' }}
                 >
-                  Documentation
+                  Orders
                 </a>
               </li>
               <li className='mb-2'>
                 <a
                   className='text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out'
-                  href='/'
+                  href='/account/register'
                   style={{ outline: 'none' }}
                 >
-                  Tutorials &amp; Guides
+                  Register
                 </a>
               </li>
               <li className='mb-2'>
@@ -175,7 +156,7 @@ const Footer = () => {
               <li className='mb-2'>
                 <a
                   className='text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out'
-                  href='/'
+                  href='/about'
                   style={{ outline: 'none' }}
                 >
                   About us
@@ -193,10 +174,10 @@ const Footer = () => {
               <li className='mb-2'>
                 <a
                   className='text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out'
-                  href='/'
+                  href='/Sell'
                   style={{ outline: 'none' }}
                 >
-                  Pricing
+                  Sell Products
                 </a>
               </li>
               <li className='mb-2'>
@@ -241,7 +222,7 @@ const Footer = () => {
                         aria-hidden='true'
                       ></span>
                       <svg
-                        className='w-3 h-3 fill-current text-blue-600 mx-3 flex-shrink-0'
+                        className='w-3 h-3 fill-current text-gray-600 mx-3 flex-shrink-0'
                         viewBox='0 0 12 12'
                         xmlns='http://www.w3.org/2000/svg'
                       >
@@ -275,22 +256,7 @@ const Footer = () => {
                 </svg>
               </a>
             </li>
-            <li className='ml-4'>
-              <a
-                className='flex justify-center items-center text-gray-600 hover:text-gray-900 bg-white hover:bg-white-100 rounded-full shadow transition duration-150 ease-in-out'
-                aria-label='Github'
-                href='/'
-                style={{ outline: 'none' }}
-              >
-                <svg
-                  className='w-8 h-8 fill-current'
-                  viewBox='0 0 32 32'
-                  xmlns='http://www.w3.org/2000/svg'
-                >
-                  <path d='M16 8.2c-4.4 0-8 3.6-8 8 0 3.5 2.3 6.5 5.5 7.6.4.1.5-.2.5-.4V22c-2.2.5-2.7-1-2.7-1-.4-.9-.9-1.2-.9-1.2-.7-.5.1-.5.1-.5.8.1 1.2.8 1.2.8.7 1.3 1.9.9 2.3.7.1-.5.3-.9.5-1.1-1.8-.2-3.6-.9-3.6-4 0-.9.3-1.6.8-2.1-.1-.2-.4-1 .1-2.1 0 0 .7-.2 2.2.8.6-.2 1.3-.3 2-.3s1.4.1 2 .3c1.5-1 2.2-.8 2.2-.8.4 1.1.2 1.9.1 2.1.5.6.8 1.3.8 2.1 0 3.1-1.9 3.7-3.7 3.9.3.4.6.9.6 1.6v2.2c0 .2.1.5.6.4 3.2-1.1 5.5-4.1 5.5-7.6-.1-4.4-3.7-8-8.1-8z'></path>
-                </svg>
-              </a>
-            </li>
+
             <li className='ml-4'>
               <a
                 className='flex justify-center items-center text-gray-600 hover:text-gray-900 bg-white hover:bg-white-100 rounded-full shadow transition duration-150 ease-in-out'
@@ -311,11 +277,11 @@ const Footer = () => {
           <div className='text-sm text-gray-600 mr-4'>
             Made by{' '}
             <a
-              className='text-blue-600 hover:underline'
+              className='text-gray-900 font-bold hover:underline'
               href='https://uxdkhan.cf/'
               style={{ outline: 'none' }}
             >
-              Sando
+              uxdKhan
             </a>
             . All rights reserved.
           </div>

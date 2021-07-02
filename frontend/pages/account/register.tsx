@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import getUser from '../../components/GetUser';
 import useForm from '../../utils/useForm';
 import Alert from './../../components/lib/Alert';
+import FormHeader from './../../components/lib/FormHeader';
 import Page from './../../components/Page';
 
 const REGISTER_MUTATION = gql`
@@ -48,32 +49,15 @@ const Register = () => {
     return <Alert text='You are logged in. Cannot access this route' status='Error' />;
   return (
     <Page>
-      <form className='flex h-4/5  items-center justify-center  ' onSubmit={handleSubmit}>
-        <div className='grid bg-white rounded-lg shadow-xl w-8/9 md:w-9/12 lg:w-1/3'>
-          <div className='flex justify-center py-4'>
-            <div className='flex bg-purple-200 rounded-full md:p-4 p-2 border-2 border-purple-300'>
-              <svg
-                className='w-8 h-8 text-white'
-                fill='none'
-                stroke='currentColor'
-                viewBox='0 0 24 24'
-                xmlns='http://www.w3.org/2000/svg'
-              >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  strokeWidth='2'
-                  d='M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4'
-                ></path>
-              </svg>
-            </div>
-          </div>
+      <form
+        className='flex h-4/5 py-4 items-center justify-center  '
+        onSubmit={handleSubmit}
+      >
+        <div className='grid bg-white rounded-lg shadow-xl w-8/9 md:w-9/12 lg:w-1/3 py-4'>
+          <FormHeader text='Register New Account' />
 
           <div className='flex justify-center'>
             <div className='flex flex-col'>
-              <h1 className='text-gray-600 font-bold md:text-2xl text-xl'>
-                Register New Account
-              </h1>
               {loading && <Alert text='Loading ...' status='Registering User' />}
 
               {data?.createUser && (
@@ -94,7 +78,7 @@ const Register = () => {
                 Your Name
               </label>
               <input
-                className='py-2 px-3 rounded-lg border-2 border-purple-300 mt-1 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent'
+                className='py-2 px-3 rounded-lg border-2 border-gray-300 mt-1 focus:outline-none focus:ring-2 focus:ring-gray-600 focus:border-transparent'
                 type='text'
                 placeholder='Name'
                 id='name'
@@ -113,7 +97,7 @@ const Register = () => {
                 Email
               </label>
               <input
-                className='py-2 px-3 rounded-lg border-2 border-purple-300 mt-1 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent'
+                className='py-2 px-3 rounded-lg border-2 border-gray-300 mt-1 focus:outline-none focus:ring-2 focus:ring-gray-600 focus:border-transparent'
                 type='email'
                 placeholder='Email Address'
                 id='email'
@@ -133,7 +117,7 @@ const Register = () => {
                 Password
               </label>
               <input
-                className='py-2 px-3 rounded-lg border-2 border-purple-300 mt-1 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent'
+                className='py-2 px-3 rounded-lg border-2 border-gray-300 mt-1 focus:outline-none focus:ring-2 focus:ring-gray-600 focus:border-transparent'
                 type='password'
                 placeholder='Password'
                 id='password'
@@ -150,13 +134,26 @@ const Register = () => {
                 Cancel
               </button>
               <button
-                className='w-auto bg-purple-500 hover:bg-purple-700 rounded-lg shadow-xl font-medium text-white px-4 py-2'
+                className='w-auto bg-gray-900 hover:bg-purple-700 rounded-lg shadow-xl font-medium text-white px-4 py-2'
                 type='submit'
               >
                 Register
               </button>
             </div>
           </fieldset>
+          <p className='py-2 px-4'>
+            Already have an account?{' '}
+            <span
+              className='cursor-pointer bg-gray-900 text-white hover:bg-gray-700 hover:text-white py-1 px-2 rounded-lg'
+              onClick={() =>
+                Router.push({
+                  pathname: `/account/login`,
+                })
+              }
+            >
+              Login
+            </span>
+          </p>
         </div>
       </form>
     </Page>
