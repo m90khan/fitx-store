@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react';
 import PrimaryBtn from '../lib/PrimaryBtn';
 
@@ -19,7 +20,11 @@ const HeroCard = () => {
               Our furniture is made and selected from the best quality materials that are
               ideal for a dream home
             </p>
-            <PrimaryBtn text='Discover Now' svg={true} />
+            <Link href='/products'>
+              <a>
+                <PrimaryBtn text='Discover Now' svg={true} />
+              </a>
+            </Link>
           </div>
         </div>
       </div>
@@ -37,20 +42,22 @@ const HeroCard = () => {
                 Custom-made complete furniture sets for your home with a durable warranty
                 and repair services for 2 years.
               </p>
-              <button className='flex items-center mt-4 text-white text-sm uppercase font-medium rounded hover:underline focus:outline-none'>
-                <span>Shop Now</span>
-                <svg
-                  className='h-5 w-5 mx-2'
-                  fill='none'
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  strokeWidth='2'
-                  viewBox='0 0 24 24'
-                  stroke='currentColor'
-                >
-                  <path d='M17 8l4 4m0 0l-4 4m4-4H3'></path>
-                </svg>
-              </button>
+              <Link href='/products'>
+                <a className='flex items-center mt-4 text-white text-sm uppercase font-medium rounded hover:underline focus:outline-none'>
+                  <span>Shop Now</span>
+                  <svg
+                    className='h-5 w-5 mx-2'
+                    fill='none'
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    strokeWidth='2'
+                    viewBox='0 0 24 24'
+                    stroke='currentColor'
+                  >
+                    <path d='M17 8l4 4m0 0l-4 4m4-4H3'></path>
+                  </svg>
+                </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -66,20 +73,22 @@ const HeroCard = () => {
               <p className='mt-2 text-gray-300'>
                 We provide handmade sofa sets in various colors, fabrics and materials.
               </p>
-              <button className='flex items-center mt-4 text-white text-sm uppercase font-medium rounded hover:underline focus:outline-none'>
-                <span>Shop Now</span>
-                <svg
-                  className='h-5 w-5 mx-2'
-                  fill='none'
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  strokeWidth='2'
-                  viewBox='0 0 24 24'
-                  stroke='currentColor'
-                >
-                  <path d='M17 8l4 4m0 0l-4 4m4-4H3'></path>
-                </svg>
-              </button>
+              <Link href='/products'>
+                <div className='flex items-center mt-4 text-white text-sm uppercase cursor-pointer font-medium rounded hover:underline focus:outline-none'>
+                  <span>Shop Now</span>
+                  <svg
+                    className='h-5 w-5 mx-2'
+                    fill='none'
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    strokeWidth='2'
+                    viewBox='0 0 24 24'
+                    stroke='currentColor'
+                  >
+                    <path d='M17 8l4 4m0 0l-4 4m4-4H3'></path>
+                  </svg>
+                </div>
+              </Link>
             </div>
           </div>
         </div>

@@ -26,14 +26,8 @@ const Home = () => {
 export default Home;
 
 /*
-Latest Products 
-Featured products
-Shop menu bar
-cart menu transition
-Checkout Page acceess + Shipping address
-Order Page
-Account Page
-
+- checkout address string and update in backend
+video for linkup sando and mellow
 
 
 */

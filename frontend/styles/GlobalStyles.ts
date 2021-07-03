@@ -5,7 +5,9 @@ const GlobalStyle = createGlobalStyle`
 @tailwind components;
 @tailwind utilities;
 
-
+.carousel .thumb {
+    border: none !important
+}
  
 `;
 

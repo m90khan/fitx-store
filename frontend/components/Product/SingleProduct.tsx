@@ -1,8 +1,7 @@
-import ProductDetails from './ProductDetails';
-import Page from '../Page';
-import gql from 'graphql-tag';
 import { useQuery } from '@apollo/client';
+import gql from 'graphql-tag';
 import Alert from '../lib/Alert';
+import ProductDetails from './ProductDetails';
 
 const SINGLE_ITEM_QUERY = gql`
   query SINGLE_ITEM_QUERY($id: ID!) {
@@ -11,6 +10,12 @@ const SINGLE_ITEM_QUERY = gql`
       price
       name
       description
+      gallery {
+        altText
+        image {
+          publicUrlTransformed
+        }
+      }
       photo {
         image {
           publicUrlTransformed

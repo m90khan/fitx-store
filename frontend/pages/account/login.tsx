@@ -103,11 +103,11 @@ const Login = () => {
             </div>
 
             <div className='flex items-center justify-center  md:gap-8 gap-4 pt-5 pb-5'>
-              <button className='w-auto bg-gray-500 hover:bg-gray-700 rounded-lg shadow-xl font-medium text-white px-4 py-2'>
+              <button className='w-auto bg-gray-500 hover:bg-gray-700 rounded  shadow-xl font-medium text-white px-4 py-2'>
                 Cancel
               </button>
               <button
-                className='w-auto bg-gray-900 hover:bg-gray-700 rounded-lg shadow-xl font-medium text-white px-4 py-2'
+                className='w-auto bg-gray-900 hover:bg-gray-700 rounded shadow-xl font-medium text-white px-4 py-2'
                 type='submit'
               >
                 Login
@@ -117,7 +117,7 @@ const Login = () => {
           <p className='py-2 px-4'>
             Don't have an account?{' '}
             <span
-              className='cursor-pointer bg-gray-900 text-white hover:bg-gray-700 hover:text-white py-1 px-2 rounded-lg'
+              className='cursor-pointer bg-gray-900 text-white hover:bg-gray-700 hover:text-white py-1 px-2 rounded'
               onClick={() =>
                 Router.push({
                   pathname: `/account/register`,

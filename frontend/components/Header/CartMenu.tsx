@@ -20,7 +20,9 @@ const CartMenu = () => {
             cart.map((cartItem) => (
               <CartMenuItem cartItem={cartItem} key={cartItem.id} />
             ))}
-          {!cart || (cart.length === 0 && <h1>Your cart is empty</h1>)}
+          <div className='text-center py-2'>
+            {(!cart || cart.length === 0) && <h1>Your cart is empty</h1>}
+          </div>
         </div>
         <div className='p-4 justify-center flex'>
           <button

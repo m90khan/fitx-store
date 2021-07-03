@@ -74,9 +74,9 @@ export default function Search() {
     const element = e.target;
     if (element.classList.contains('close-cart')) {
       document.body.style.overflow = 'auto';
-      router.push({
-        pathname: `${router.pathname}`,
-      });
+      // router.push({
+      //   pathname: `${router.pathname}`,
+      // });
       dispatch({ type: 'SEARCH', setSearch: false });
     }
   };

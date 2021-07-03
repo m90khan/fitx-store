@@ -46,7 +46,7 @@ exports.ForgottenPasswordToken = {
       if (existingItem) return null;
 
       const now = new Date().toISOString();
-
+        console.log( updatedItem.user)
       const { errors, data } = await context.executeGraphQL({
         context: context.createContext({ skipAccessControl: true }),
         query: `
@@ -80,14 +80,16 @@ exports.ForgottenPasswordToken = {
         subject: 'Request for password reset',
         text: `
           <div>
-          <p>Hi ${User.name}</p>
+          <p>Hello ${User.name},</p>
           <div>
             <p>
-             You can reset your password by following the link Below{' '}
+             You can reset your password by following the link. 
               <a href='${pathUrl}' target="_blank" style="display: "block" ">
                 Click here
               </a>
             </p>
+            <p>You have 24 hours to change the password</p>
+            
           </div>
         </div>
           `,
