@@ -92,7 +92,7 @@ module.exports = {
       name: PROJECT_NAME,
       enableDefaultRoute: true,
       authStrategy,
-      isAccessAllowed: isLoggedIn
+      isAccessAllowed: userIsAdmin
     }),
   ],
 };

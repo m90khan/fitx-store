@@ -4,7 +4,7 @@ const CTA = () => {
   return (
     <div className=' mt-10 mb-10'>
       <div
-        className='bg-top   bg-cover'
+        className='   bg-cover bg-bottom'
         style={{ backgroundImage: 'url(/images/site/cta.jpg)' }}
       >
         <div className='py-16 md:py-40 text-center flex flex-col items-center text-black	'>

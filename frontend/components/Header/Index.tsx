@@ -69,7 +69,7 @@ export default function Header() {
               <ul className='md:flex items-center justify-between text-base text-gray-700 pt-4 md:pt-0'>
                 <Link href='/products'>
                   <li>
-                    <a className='inline-block no-underline hover:text-black hover:underline py-2 px-4'>
+                    <a className='inline-block no-underline cursor-pointer hover:text-black hover:underline py-2 px-4'>
                       Shop
                     </a>
                   </li>
@@ -79,42 +79,55 @@ export default function Header() {
                   <>
                     <Link href='/sell'>
                       <li>
-                        <a className='inline-block no-underline hover:text-black hover:underline py-2 px-4'>
+                        <a className='inline-block no-underline cursor-pointer  hover:text-black hover:underline py-2 px-4'>
                           Sell
                         </a>
                       </li>
                     </Link>
                     <Link href='/orders'>
                       <li>
-                        <a className='inline-block no-underline hover:text-black hover:underline py-2 px-4'>
+                        <a className='inline-block no-underline cursor-pointer hover:text-black hover:underline py-2 px-4'>
                           Orders
                         </a>
                       </li>
                     </Link>
                     <Link href='/account'>
                       <li>
-                        <a className='inline-block no-underline hover:text-black hover:underline py-2 px-4'>
+                        <a className='inline-block no-underline cursor-pointer hover:text-black hover:underline py-2 px-4'>
                           Account
                         </a>
                       </li>
                     </Link>
                     <Link href='/cart'>
                       <li>
-                        <a className='inline-block no-underline hover:text-black hover:underline py-2 px-4'>
+                        <a className='inline-block no-underline cursor-pointer hover:text-black hover:underline py-2 px-4'>
                           Cart
                         </a>
                       </li>
                     </Link>
                   </>
                 )}
-                <li>
-                  <a
-                    className='inline-block no-underline hover:text-black hover:underline py-2 px-4'
-                    href='/about'
-                  >
-                    About
-                  </a>
-                </li>
+                <Link href='/about'>
+                  <li>
+                    <a
+                      className='inline-block no-underline hover:text-black hover:underline py-2 px-4'
+                      href='/about'
+                    >
+                      About
+                    </a>
+                  </li>
+                </Link>
+
+                <Link href='/contact'>
+                  <li>
+                    <a
+                      className='inline-block no-underline hover:text-black hover:underline py-2 px-4'
+                      href='/about'
+                    >
+                      Contact
+                    </a>
+                  </li>
+                </Link>
               </ul>
             </nav>
           </div>
@@ -144,7 +157,7 @@ export default function Header() {
             </Link>
 
             <a
-              className=' relative pl-3 inline-block no-underline hover:text-black'
+              className=' relative pl-3 inline-block no-underline hover:text-black cursor-pointer'
               onClick={handleCart}
             >
               <div className='  absolute text-xs rounded-full -mt-1 -mr-2 px-1 font-bold top-0 right-0 bg-gray-900 text-white'>

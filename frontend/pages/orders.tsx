@@ -1,13 +1,14 @@
 import { useQuery } from '@apollo/client';
 import gql from 'graphql-tag';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import getUser from '../components/GetUser';
 import Page from '../components/Page';
 import OrderItem from './../components/Order/OrderItem';
 
 const USER_ORDERS_QUERY = gql`
-  query USER_ORDERS_QUERY {
-    allOrders {
+  query USER_ORDERS_QUERY($id: ID!) {
+    allOrders(where: { user: { id: $id } }) {
       id
       charge
       total
@@ -31,11 +32,21 @@ const USER_ORDERS_QUERY = gql`
 `;
 
 const ordersPage = () => {
-  const { data, error, loading } = useQuery(USER_ORDERS_QUERY);
+  const user = getUser();
+  const { data, error, loading } = useQuery(USER_ORDERS_QUERY, {
+    variables: {
+      id: user?.id,
+    },
+  });
+  console.log(user);
   if (loading) return <p>Loading...</p>;
   const { allOrders } = data;
-  const user = getUser();
   const router = useRouter();
+  useEffect(() => {
+    if (!user) {
+      router.push('/');
+    }
+  }, [user]);
 
   return (
     <Page>
@@ -63,42 +74,44 @@ const ordersPage = () => {
           <hr className='pb-6 mt-6' />
 
           <div className='flex-1'>
-            {allOrders.map((order) => (
-              <table className='w-full text-sm lg:text-base'>
-                <thead>
-                  <tr className='h-12 uppercase'>
-                    <th className='hidden md:table-cell'></th>
-                    <th className='text-left'>Order nr: {order.id}</th>
-                    <th className='lg:text-right text-left pl-5 lg:pl-0'>
-                      <span className='lg:hidden' title='Quantity'>
-                        Qtd
-                      </span>
-                      <span className='hidden lg:inline'>Quantity</span>
-                    </th>
-                    <th className='hidden text-right md:table-cell'>Unit price</th>
-                    <th className='text-right'>Total price</th>{' '}
-                    <th className='text-right'>
-                      {' '}
-                      <button
-                        className='w-auto bg-gray-900 hover:bg-gray-700 rounded-lg shadow-xl font-medium text-white px-4 py-2'
-                        onClick={() => {
-                          router.push('/order/' + order.id);
-                        }}
-                      >
-                        Details
-                      </button>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <>
-                    {order.items.map((item) => (
-                      <OrderItem key={item.id} item={item} orderId={order.id} />
-                    ))}
-                  </>
-                </tbody>
-              </table>
-            ))}
+            {allOrders.length == 0 && <h1>You have no orders yet!</h1>}
+            {allOrders &&
+              allOrders.map((order) => (
+                <table className='w-full text-sm lg:text-base'>
+                  <thead>
+                    <tr className='h-12 uppercase'>
+                      <th className='hidden md:table-cell'></th>
+                      <th className='text-left'>Order nr: {order.id}</th>
+                      <th className='lg:text-right text-left pl-5 lg:pl-0'>
+                        <span className='lg:hidden' title='Quantity'>
+                          Qtd
+                        </span>
+                        <span className='hidden lg:inline'>Quantity</span>
+                      </th>
+                      <th className='hidden text-right md:table-cell'>Unit price</th>
+                      <th className='text-right'>Total price</th>{' '}
+                      <th className='text-right'>
+                        {' '}
+                        <button
+                          className='w-auto bg-gray-900 hover:bg-gray-700 rounded-lg shadow-xl font-medium text-white px-4 py-2'
+                          onClick={() => {
+                            router.push('/order/' + order.id);
+                          }}
+                        >
+                          Details
+                        </button>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <>
+                      {order.items.map((item) => (
+                        <OrderItem key={item.id} item={item} orderId={order.id} />
+                      ))}
+                    </>
+                  </tbody>
+                </table>
+              ))}
           </div>
         </div>
       </div>

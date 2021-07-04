@@ -17,8 +17,8 @@ const { sendEmail } = require('../emails');
 exports.ForgottenPasswordToken = {
   access: {
     create: true,
-    read: isLoggedIn,
-    update: userIsAdmin,
+    read: true,
+    update: true,
     delete: userIsAdmin,
   },
   fields: {

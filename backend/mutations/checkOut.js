@@ -3,12 +3,13 @@ const stripeConfig = require('../utils/stripe');
 require('dotenv').config();
 const { createItem } = require('@keystonejs/server-side-graphql-client');
 
-async function checkout(root, { token }, context) {
+async function checkout(root, { token , shipping }, context) {
   // 1. Make sure they are signed in
   const currentUser = context.authedItem;
   if (!currentUser.id) {
     throw new Error('You must be logged in to do this!');
   }
+  console.log(shipping)
   // 1.5 Query the current user
   const { data } = await context.executeGraphQL({
     context: context.createContext({ skipAccessControl: false }),
@@ -82,6 +83,7 @@ async function checkout(root, { token }, context) {
       charge: charge.id,
       items: { create: orderItems },
       user: { connect: { id: currentUser.id } },
+      shipping: shipping
     },
     returnFields: `id`,
   });

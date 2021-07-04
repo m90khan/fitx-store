@@ -20,6 +20,7 @@ const Logout = () => {
     e.preventDefault();
     await logout();
     Router.push({ pathname: '/' });
+    Router.reload();
   };
   return (
     <>
@@ -33,7 +34,10 @@ const Logout = () => {
           <Alert text='Loading ...' status='Creating Product' />
         </div>
       )} */}
-      <a onClick={handleSubmit} className='inline-block no-underline hover:text-black'>
+      <a
+        onClick={handleSubmit}
+        className='inline-block cursor-pointer no-underline hover:text-black'
+      >
         <svg
           width='22'
           height='22'

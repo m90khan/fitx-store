@@ -54,7 +54,7 @@ const User = {
   access: {
     create:   true,
     read:  isLoggedIn,
-    update:  userIsAdminOrOwner,
+    update:  userOwnsItem,
     // only people with the permission can delete themselves!
     // You can't delete yourself
     delete: userIsAdmin,

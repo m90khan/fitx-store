@@ -4,9 +4,9 @@ import styled from 'styled-components';
 import { perPage } from '../config';
 import SearchBtn from './Buttons/SearchBtn';
 import Product from './ProductCard';
-export const ALL_PRODUCTS_QUERY = gql`
+export const ALL_PRODUCTS_QUERY_ASC = gql`
   query ALL_PRODUCTS_QUERY($skip: Int = 0, $first: Int) {
-    allProducts(first: $first, skip: $skip) {
+    allProducts(first: $first, skip: $skip, sortBy: price_ASC) {
       id
       name
       price
@@ -27,10 +27,11 @@ const Shop = ({ page }) => {
     first: perPage,
   };
 
-  const { data, error, loading } = useQuery(ALL_PRODUCTS_QUERY, {
+  const { data, error, loading } = useQuery(ALL_PRODUCTS_QUERY_ASC, {
     variables: PaginateObject,
   });
 
+  console.log(data);
   if (loading) return <h1>Loading</h1>;
   if (error) return <h1>error:{error.message}</h1>;
   return (

@@ -6,7 +6,7 @@ const HeroCard = () => {
   return (
     <div className='container mx-auto px-6'>
       <div
-        className=' h-80 rounded-md overflow-hidden bg-cover sm:bg-center  bg-right'
+        className=' h-96 sm:h-80 rounded-md overflow-hidden bg-cover sm:bg-center  bg-right'
         style={{
           backgroundImage: "url('/images/site/hero-1.png')",
         }}

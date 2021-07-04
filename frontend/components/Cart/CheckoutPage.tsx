@@ -15,8 +15,8 @@ import FormHeader from '../lib/FormHeader';
 
 */
 const CREATE_ORDER_MUTATION = gql`
-  mutation CREATE_ORDER_MUTATION($token: String!) {
-    checkout(token: $token) {
+  mutation CREATE_ORDER_MUTATION($token: String!, $shipping: String!) {
+    checkout(token: $token, shipping: $shipping) {
       id
       charge
       total
@@ -38,7 +38,8 @@ function CheckoutForm() {
   const [city, setCity] = useState('');
   const [country, setCountry] = useState('');
   const [zipCode, setZipCode] = useState('');
-
+  const shippingAddress = `${address}, ${city}, ${country}, ${zipCode}`;
+  console.log(shippingAddress);
   const stripe = useStripe();
   const elements = useElements();
   const router = useRouter();
@@ -68,6 +69,7 @@ function CheckoutForm() {
     const order = await checkout({
       variables: {
         token: paymentMethod.id,
+        shipping: shippingAddress,
       },
     });
     console.log(`Finished with the order!!`);
@@ -91,23 +93,21 @@ function CheckoutForm() {
       });
     }
   }, [user]);
-  if (!user)
-    return (
-      <Alert status='Error' text='You do not have permission to access this route' />
-    );
+  if (!user?.cart?.length)
+    return <Alert status='Empty Cart' text='You do not have any Items in the cart' />;
   return (
     <form
       onSubmit={handleSubmit}
       className='flex h-4/5  items-center justify-center py-6  '
     >
-      {loading && <Alert status='Loading' text='Loading Checkout' />}
-      {error && (
-        // @ts-ignore
-        <Alert status='error' text={error.message} />
-      )}
-      {graphQLError && <Alert status='error' text={graphQLError.message} />}
       <div className='grid   rounded-lg shadow-xl w-8/9 md:w-9/12 lg:w-1/3 bg-gray-400 py-4 px-6'>
         <FormHeader text='Payment' />
+        {loading && <Alert status='Loading' text='Loading Checkout' />}
+        {error && (
+          // @ts-ignore
+          <Alert status='error' text={error.message} />
+        )}
+        {graphQLError && <Alert status='error' text={graphQLError.message} />}
 
         <div className='mt-10 grid grid-cols-3 justify-center items-center  bg-gray-700 px-2  border-b-2 border-gray-100 border-opacity-20'>
           <label

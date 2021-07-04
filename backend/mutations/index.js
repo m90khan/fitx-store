@@ -13,7 +13,7 @@ exports.customSchemasMutations = {
       resolver: addToCart,
     },
     {
-      schema: ' checkout(token: String!): Order',
+      schema: ' checkout(token: String!, shipping:String!): Order',
       resolver: checkout,
     },
     {

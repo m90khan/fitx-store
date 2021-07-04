@@ -82,13 +82,11 @@ const ChangePasswordForm = ({ token, accessedAt }) => {
           <FormHeader text='Password Reset Request' />
           {error && <Alert text={error.message} />}
           {dataNewLoading && (
-            <Alert text='Loading: ' status='Password Reset In Progress ...' />
+            <Alert text='Loading' status='Password Reset In Progress ...' />
           )}
-          {dataNewLoading && (
-            <Alert status='Loading: ' text='Password Reset In Progress...' />
-          )}
+
           {dataNewPassword && (
-            <Alert status='Success: ' text='Password has been updated successfully.' />
+            <Alert status='Success' text='Password has been updated successfully.' />
           )}
           <fieldset>
             <div className='grid grid-cols-1 mt-5 mx-7'>
